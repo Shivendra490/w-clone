@@ -16,14 +16,20 @@ const Wcomp = () => {
 
         <input type="search" className="search" placeholder="enter name" />
         <div className="mainCompWrapper">
-          <Stack direction="row" spacing={2} style={{ padding: "0.2em",backgroundColor:'blue' }}>
+          <Stack
+            direction="row"
+            spacing={2}
+            style={{ padding: "0.2em", backgroundColor: "blue" }}
+          >
             <Avatar>S</Avatar>
           </Stack>
           <div className="nameChatCombineWrapper">
             <div className="name">
               <h4>shiv</h4>
             </div>
-            <div className="chat">hello all the best khijigjejleirjiler</div>
+            <div className="chat">
+              <span>hello all the best khijigjejleirjiler </span>
+            </div>
           </div>
           <div className="time">11:28pm</div>
         </div>
@@ -170,13 +176,6 @@ const Wcomp = () => {
           </div>
           <div className="time">11:28pm</div>
         </div>
-
-
-
-
-
-
-
       </div>
       <div className="right">hello right</div>
     </div>
