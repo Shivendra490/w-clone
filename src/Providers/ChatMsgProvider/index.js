@@ -15,7 +15,8 @@ const chatData = [
   },
 ];
 
-const sock = io("http://localhost:5000");
+const sock = io("http://localhost:5000"); 
+
 const ChatMsgProvider = ({ children }) => {
   const [chatMessages, SetChatMessages] = useState(chatData);
 
