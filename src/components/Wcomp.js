@@ -22,7 +22,7 @@ const Wcomp = () => {
           <div>set</div> */}
         </div>
 
-        <input type="search" className="search" placeholder="enter name" />
+        <input type="search" className="search" placeholder="search here" />
         <div className="mainCompWrapper">
           <Stack
             direction="row"
@@ -39,7 +39,7 @@ const Wcomp = () => {
               <span>hello all the best khijigjejleirjiler </span>
             </div>
           </div>
-          <div className="time">11:28pm</div>
+          <div className="time">11:28 PM</div>
         </div>
 
         <div className="mainCompWrapper">
@@ -52,7 +52,7 @@ const Wcomp = () => {
             </div>
             <div className="chat">hello all the best khijigjejleirjiler</div>
           </div>
-          <div className="time">11:28pm</div>
+          <div className="time">11:28 PM</div>
         </div>
 
         <div className="mainCompWrapper">
@@ -65,20 +65,7 @@ const Wcomp = () => {
             </div>
             <div className="chat">hello all the best khijigjejleirjiler</div>
           </div>
-          <div className="time">11:28pm</div>
-        </div>
-
-        <div className="mainCompWrapper">
-          <Stack direction="row" spacing={2} style={{ padding: "0.2em" }}>
-            <Avatar>A</Avatar>
-          </Stack>
-          <div className="nameChatCombineWrapper">
-            <div className="name">
-              <h4>Arora</h4>
-            </div>
-            <div className="chat">hello all the best khijigjejleirjiler</div>
-          </div>
-          <div className="time">10:28pm</div>
+          <div className="time">11:28 PM</div>
         </div>
 
         <div className="mainCompWrapper">
@@ -91,7 +78,7 @@ const Wcomp = () => {
             </div>
             <div className="chat">hello all the best khijigjejleirjiler</div>
           </div>
-          <div className="time">1:28pm</div>
+          <div className="time">1:28 PM</div>
         </div>
 
         <div className="mainCompWrapper">
@@ -104,7 +91,7 @@ const Wcomp = () => {
             </div>
             <div className="chat">hello all the best khijigjejleirjiler</div>
           </div>
-          <div className="time">1:28pm</div>
+          <div className="time">1:28 PM</div>
         </div>
 
         <div className="mainCompWrapper">
@@ -117,7 +104,7 @@ const Wcomp = () => {
             </div>
             <div className="chat">hello all the best khijigjejleirjiler</div>
           </div>
-          <div className="time">9:08pm</div>
+          <div className="time">9:08 PM</div>
         </div>
 
         <div className="mainCompWrapper">
@@ -130,59 +117,32 @@ const Wcomp = () => {
             </div>
             <div className="chat">hello all the best khijigjejleirjiler</div>
           </div>
-          <div className="time">11:28pm</div>
+          <div className="time">11:28 PM</div>
+        </div>
+      </div>
+
+      <div className="right">
+        <div className="topDetailsWrapper">
+          <div className="userNameOnlineWrapper">
+            <div className="userName">Alice</div>
+            <div className="onOff">online</div>
+          </div>
+          <div className="dpWrapper">
+            <Stack direction="row" spacing={2} style={{display:'grid',placeContent:'center'}}>
+              <Avatar>L</Avatar>
+            </Stack>
+          </div>
+        </div>
+        <div className="chatWrapper">
+          <span className="chat">hh</span>
+          <span className="chat">ygdfuhu</span>
         </div>
 
-        <div className="mainCompWrapper">
-          <Stack direction="row" spacing={2} style={{ padding: "0.2em" }}>
-            <Avatar>S</Avatar>
-          </Stack>
-          <div className="nameChatCombineWrapper">
-            <div className="name">
-              <h4>shiv</h4>
-            </div>
-            <div className="chat">hello all the best khijigjejleirjiler</div>
+        <div className="chatInputWrapper">
+          <input type="text" className="chatInput" placeholder="Enter your message here"/>
+          <div className="button">
+            <button style={{width:'100%',height:'100%'}}>send</button>
           </div>
-          <div className="time">11:28pm</div>
-        </div>
-
-        <div className="mainCompWrapper">
-          <Stack direction="row" spacing={2} style={{ padding: "0.2em" }}>
-            <Avatar>I</Avatar>
-          </Stack>
-          <div className="nameChatCombineWrapper">
-            <div className="name">
-              <h4>shiv</h4>
-            </div>
-            <div className="chat">hello all the best khijigjejleirjiler</div>
-          </div>
-          <div className="time">11:28pm</div>
-        </div>
-
-        <div className="mainCompWrapper">
-          <Stack direction="row" spacing={2} style={{ padding: "0.2em" }}>
-            <Avatar>R</Avatar>
-          </Stack>
-          <div className="nameChatCombineWrapper">
-            <div className="name">
-              <h4>Ram</h4>
-            </div>
-            <div className="chat">hello all the best khijigjejleirjiler</div>
-          </div>
-          <div className="time">11:28pm</div>
-        </div>
-
-        <div className="mainCompWrapper">
-          <Stack direction="row" spacing={2} style={{ padding: "0.2em" }}>
-            <Avatar>S</Avatar>
-          </Stack>
-          <div className="nameChatCombineWrapper">
-            <div className="name">
-              <h4>Satyam</h4>
-            </div>
-            <div className="chat">hello all the best khijigjejleirjiler</div>
-          </div>
-          <div className="time">11:28pm</div>
         </div>
       </div>
       <div className="right">
