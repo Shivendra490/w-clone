@@ -124,8 +124,10 @@
 
 .right .chatWrapper{
     display:flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     border:solid;
+    flex:1;
+
 
 }
 

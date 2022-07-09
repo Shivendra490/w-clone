@@ -3,9 +3,21 @@ import ChatMsgContext from "./context";
 import { io } from "socket.io-client";
 import getMessages from "../../api/getMessages";
 
+const chatData = [
+  { pic: "A", name: "Amit", chat: "Gud morn", time: "11:28 AM" },
+  { pic: "B", name: "Bumrah", chat: "bowling", time: "10:25 PM" },
+  { pic: "S", name: "sehwag", chat: "Hey", time: "01:28 AM" },
+  {
+    pic: "G",
+    name: "Gautam",
+    chat: "Member of Parliament",
+    time: "02:24 APM",
+  },
+];
+
 const sock = io("http://localhost:5000");
 const ChatMsgProvider = ({ children }) => {
-  const [chatMessages, SetChatMessages] = useState([]);
+  const [chatMessages, SetChatMessages] = useState(chatData);
 
   const fetchMessages = async () => {
     try {
