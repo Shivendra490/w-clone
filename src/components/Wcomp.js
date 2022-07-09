@@ -6,10 +6,21 @@ import Stack from "@mui/material/Stack";
 import { useChatMsgContext } from "../Providers/ChatMsgProvider/context";
 import UserSingleComponent from "./UserSingleComponent";
 
+const chatData = [
+  { pic: "A", name: "Amit", chat: "Gud morn", time: "11:28 AM" },
+  { pic: "B", name: "Bumrah", chat: "bowling", time: "10:25 PM" },
+  { pic: "S", name: "sehwag", chat: "Hey", time: "01:28 AM" },
+  {
+    pic: "G",
+    name: "Gautam",
+    chat: "Member of Parliament",
+    time: "02:24 APM",
+  },
+];
+
 const Wcomp = () => {
   const [inputMsg, SetInputMsg] = useState("");
-  const { sendMsg,chatMessages } = useChatMsgContext();
-  
+  const { sendMsg, chatMessages } = useChatMsgContext();
 
   const submitHandler = () => {
     sendMsg(inputMsg);
@@ -25,13 +36,9 @@ const Wcomp = () => {
         </div>
 
         <input type="search" className="search" placeholder="search here" />
-        <div style={{padding:'10px'}}>
-          {chatMessages.map((curMsg) => {
-            return (
-              <>
-                <UserSingleComponent user={curMsg} />
-              </>
-            );
+        <div style={{ padding: "10px" }}>
+          {chatData.map((curMsg) => {
+            return <UserSingleComponent user={curMsg} />;
           })}
         </div>
       </div>
@@ -53,8 +60,9 @@ const Wcomp = () => {
           </div>
         </div>
         <div className="chatWrapper">
-          <span className="chat">hh</span>
-          <span className="chat">ygdfuhu</span>
+          {chatMessages.map((chatMsg) => (
+            <span className="chat">{chatMsg.msg}</span>
+          ))}
         </div>
 
         <div className="chatInputWrapper">
@@ -67,6 +75,7 @@ const Wcomp = () => {
           />
           <div className="button">
             <button
+              type="submit"
               style={{ width: "100%", height: "100%" }}
               onClick={submitHandler}
             >
