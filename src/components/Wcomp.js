@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Wcomp.css";
 // import 'bootstrap/dist/css/bootstrap.min.css'
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
+import { useChatMsgContext } from "../Providers/ChatMsgProvider/context";
 
 const Wcomp = () => {
+  const [inputMsg, SetInputMsg] = useState("");
+  const { sendMsg } = useChatMsgContext();
+
+  const submitHandler = () =>{
+    sendMsg(inputMsg)
+  }
+
   return (
     <div className="left-right-wrapper">
       <div className="left">
@@ -177,7 +185,15 @@ const Wcomp = () => {
           <div className="time">11:28pm</div>
         </div>
       </div>
-      <div className="right">hello right</div>
+      <div className="right">
+        hello right
+        <input
+          style={{ fontSize: "larger" }}
+          value={inputMsg}
+          onChange={(e) => SetInputMsg(e.target.value)}
+        />
+        <button onClick={submitHandler}> Send Message</button>
+      </div>
     </div>
   );
 };
