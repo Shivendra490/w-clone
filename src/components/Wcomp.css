@@ -1,9 +1,62 @@
-/* @import '~mdb-ui-kit/css/mdb.min.css' */
 
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&family=Montserrat:wght@200&family=Nunito:ital,wght@0,300;1,300&family=Poppins:wght@200;300&display=swap');
 *{
     padding: 0;
     margin: 0;
+    /* font-family: 'Montserrat', sans-serif; */
+    font-family: 'Nunito', sans-serif;
+    
+
 }
+
+:root {
+    --code-color: darkred;
+    --code-bg-color: #f6f6f6;
+    --code-font-size: 14px;
+    --code-line-height: 1.4;
+    --scroll-bar-color: #c5c5c5;
+    --scroll-bar-bg-color: #f6f6f6;
+}
+
+pre {
+    color: var(--code-color);
+    font-size: var(--code-font-size);
+    line-height: var(--code-line-height);
+    background-color: var(--code-bg-color);
+}
+
+.code-block {
+    max-height: 100px;
+    overflow: auto;
+    padding: 8px 7px 5px 15px;
+    margin: 0px 0px 0px 0px;
+    border-radius: 7px;
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scroll-bar-color) var(--scroll-bar-bg-color);
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+    width: 10px;
+}
+
+*::-webkit-scrollbar-track {
+    background: var(--scroll-bar-bg-color);
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: var(--scroll-bar-color);
+    border-radius: 20px;
+    border: 3px solid var(--scroll-bar-bg-color);
+}
+
+
+
+
+
 
 .left-right-wrapper{
     display:flex;
@@ -18,6 +71,9 @@
     display:flex;
     flex-direction: column;
     padding:1em;
+    z-index: 1;
+    box-shadow: 5px 5px 5px green;
+
     
 }
 
@@ -28,6 +84,7 @@
     height:3em;
     display:grid;
     place-content: center;
+    border-radius: 50px;
 }
 
 .left .search{
@@ -37,6 +94,7 @@
     height:2.9em;
     margin:1em 0;
     text-align: center;
+    border-radius: 50px;
 }
 
 .left .mainCompWrapper{
@@ -81,7 +139,7 @@
 
 .right{
     flex:7;
-    border:2px solid black;
+    /* border:2px solid black; */
     display:flex;
     flex-direction: column;
     justify-content: space-between;
@@ -89,7 +147,7 @@
 
 .right .topDetailsWrapper{
     display:flex;
-    border:solid;
+    /* border:solid; */
     justify-content:space-between;
     background-color: green;;
 
@@ -99,7 +157,7 @@
 .right .topDetailsWrapper .userNameOnlineWrapper{
     display:flex;
     flex-direction: column;
-    border:1px solid green;
+    /* border:1px solid green; */
     margin:0.5em 0.8em;
 
 }
@@ -125,36 +183,97 @@
 .right .chatWrapper{
     display:flex;
     flex-direction: column-reverse;
-    border:solid;
+    /* border:solid; */
     flex:1;
+    overflow-y: auto
 
 
 }
 
+.right .chatWrapper .chatLeftRightwrapper{
+    margin: 10px auto;
+    display: flex;
+    flex-direction: column-reverse;
+    width: 80%;
+    gap: 20px;
+    flex: 1;
+    
+}
+
+
 .right .chatWrapper .chat{
-    margin: 10px 0;
+    /* margin: 10px 0;
     background-color: aqua;
     min-height: 2em;
-    margin:0.5em;
+    margin:0.5em; */
+
+    
+    
+        /* display: inline-block; */
+        /* border: solid; */
+        display:flex;
+        flex-direction: column;
+        padding: 8px 16px;
+        max-width: 80%;
+        overflow-wrap: break-word;
+        border-radius: 15px;
+        align-self: flex-start;
+        background-color: grey;;
+        color:white;
+
+    
 
 
+}
+
+.right .chatWrapper .chat .tickTimeWrapper{
+    display:flex;
+    justify-content: flex-end;
+    font-size: 10px;
+}
+
+.right .chatWrapper .chat .tickTimeWrapper .rightDoubleTick{
+    padding-right: 2px;
 }
 
 
 .right .chatInputWrapper{
     display:flex;
-    border:1px solid red;
+    border:none;
     height:7%;
 }
 
 .right .chatInputWrapper .chatInput{
-    flex:9
+    flex:9;
+    padding:1em;
 }
 
 .right .chatInputWrapper .button{
     flex:1;
-    width:100%
+    width:100%;
+    
 }
+
+
+
+
+
+.chat .left{
+    align-self: flex-start;
+}
+
+
+.right .chatWrapper .chatRight{
+    align-self: flex-end;
+    background-color: rgb(15 83 15);
+    
+}
+
+.rightDoubleTick{
+
+}
+
+
 
 
 

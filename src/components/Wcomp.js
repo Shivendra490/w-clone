@@ -5,7 +5,9 @@ import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
 import { useChatMsgContext } from "../Providers/ChatMsgProvider/context";
 import UserSingleComponent from "./UserSingleComponent";
-import { useUserContext } from "../Providers/UserDataProvider/context";
+import Header from "../AtomComponents/Header";
+import Body from "../AtomComponents/Body";
+import Footer from "../AtomComponents/Footer";
 
 const chatData = [
   { pic: "A", name: "Amit", chat: "Gud morn", time: "11:28 AM" },
@@ -15,7 +17,7 @@ const chatData = [
     pic: "G",
     name: "Gautam",
     chat: "Member of Parliament",
-    time: "02:24 APM",
+    time: "02:24 AM",
   },
 ];
 
@@ -39,53 +41,22 @@ const Wcomp = () => {
         </div>
 
         <input type="search" className="search" placeholder="search here" />
-        <div style={{ padding: "10px" }}>
+        <div style={{ padding: '10px',flex: '1 0 0',overflowY: 'auto'}}>
           {chatData.map((curMsg) => {
-            return <UserSingleComponent user={curMsg} />;
+            return (
+              <>
+                <UserSingleComponent user={curMsg} />
+              </>
+            );
           })}
         </div>
       </div>
 
       <div className="right">
-        <div className="topDetailsWrapper">
-          <div className="userNameOnlineWrapper">
-            <div className="userName">Alice</div>
-            <div className="onOff">online</div>
-          </div>
-          <div className="dpWrapper">
-            <Stack
-              direction="row"
-              spacing={2}
-              style={{ display: "grid", placeContent: "center" }}
-            >
-              <Avatar>L</Avatar>
-            </Stack>
-          </div>
-        </div>
-        <div className="chatWrapper">
-          {chatMessages.map((chatMsg) => (
-            <span className="chat">{chatMsg.msg}</span>
-          ))}
-        </div>
-
-        <div className="chatInputWrapper">
-          <input
-            type="text"
-            className="chatInput"
-            placeholder="Enter your message here"
-            value={inputMsg}
-            onChange={(e) => SetInputMsg(e.target.value)}
-          />
-          <div className="button">
-            <button
-              type="submit"
-              style={{ width: "100%", height: "100%" }}
-              onClick={submitHandler}
-            >
-              send
-            </button>
-          </div>
-        </div>
+        <Header />
+        <Body />
+      
+        <Footer submitHandler={submitHandler} inputMsg={inputMsg} SetInputMsg={SetInputMsg}/>
       </div>
     </div>
   );
