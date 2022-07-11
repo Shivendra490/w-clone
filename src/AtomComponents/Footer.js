@@ -1,4 +1,5 @@
 import React from 'react'
+import SendIcon from '@mui/icons-material/Send';
 
 const Footer = ({inputMsg,SetInputMsg,submitHandler}) => {
   return (
@@ -12,10 +13,11 @@ const Footer = ({inputMsg,SetInputMsg,submitHandler}) => {
           />
           <div className="button">
             <button
-              style={{ width: "100%", height: "100%" }}
+              style={{ width: "100%", height: "100%",backgroundColor: 'green',
+              borderRadius: '50px' }}
               onClick={submitHandler}
             >
-              send
+             <SendIcon style={{color:"white"}}/> 
             </button>
           </div>
         </div>

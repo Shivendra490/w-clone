@@ -1,24 +1,12 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import ChatMsgContext from "./context";
 import { io } from "socket.io-client";
 import getMessages from "../../api/getMessages";
 
-const chatData = [
-  { pic: "A", name: "Amit", chat: "Gud morn", time: "11:28 AM" },
-  { pic: "B", name: "Bumrah", chat: "bowling", time: "10:25 PM" },
-  { pic: "S", name: "sehwag", chat: "Hey", time: "01:28 AM" },
-  {
-    pic: "G",
-    name: "Gautam",
-    chat: "Member of Parliament",
-    time: "02:24 APM",
-  },
-];
-
-const sock = io("http://localhost:5000"); 
+const sock = io("http://localhost:5000");
 
 const ChatMsgProvider = ({ children }) => {
-  const [chatMessages, SetChatMessages] = useState(chatData);
+  const [chatMessages, SetChatMessages] = useState([]);
 
   const fetchMessages = async () => {
     try {
@@ -29,13 +17,15 @@ const ChatMsgProvider = ({ children }) => {
       //log or toast the error
     }
   };
-  const receiveMsgFromSocket = () => {
+  //msg  --> {msg: 'hello'}
+  const receiveMsgFromSocket = useCallback(() => {
     sock.on("msg-receive", (msg, callback) => {
+      SetChatMessages([msg, ...chatMessages]);
       // set message received to proper place
       // since the msg would be of UNREAD status, bring the unread msg to the top in chatMessage.
       callback({ ok: true });
     });
-  };
+  }, [chatMessages]);
 
   const changeStatusToRead = (roomId, msgId) => {
     //when particular room is opened then set all of its messages status to read.
@@ -46,7 +36,7 @@ const ChatMsgProvider = ({ children }) => {
   const changeStatusToDelivered = () => {};
 
   const sendMsg = (msg) => {
-    sock.emit("msg-send", { payload: msg }, (ack) => {
+    sock.emit("msg-send", { msg }, (ack) => {
       console.log(ack);
       if (ack.ok) {
         //append new msg in chatMessage set msgId status to sent
@@ -63,7 +53,7 @@ const ChatMsgProvider = ({ children }) => {
   useEffect(() => {
     receiveMsgFromSocket();
     return () => sock.off("msg-receive");
-  }, []);
+  }, [receiveMsgFromSocket]);
 
   useEffect(() => {});
   const values = useMemo(
