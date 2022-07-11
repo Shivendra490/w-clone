@@ -3,10 +3,12 @@ import ChatMsgContext from "./context";
 import { io } from "socket.io-client";
 import getMessages from "../../api/getMessages";
 
-const sock = io("http://localhost:5000");
+const sock = io("http://localhost:5000", { autoConnect: true });
+sock.auth = { username: "nilay" };
 
 const ChatMsgProvider = ({ children }) => {
   const [chatMessages, SetChatMessages] = useState([]);
+  const [userId, setuserId] = useState("");
 
   const fetchMessages = async () => {
     try {
@@ -20,6 +22,7 @@ const ChatMsgProvider = ({ children }) => {
   //msg  --> {msg: 'hello'}
   const receiveMsgFromSocket = useCallback(() => {
     sock.on("msg-receive", (msg, callback) => {
+      console.log("msfg", msg);
       SetChatMessages([msg, ...chatMessages]);
       // set message received to proper place
       // since the msg would be of UNREAD status, bring the unread msg to the top in chatMessage.
@@ -36,8 +39,7 @@ const ChatMsgProvider = ({ children }) => {
   const changeStatusToDelivered = () => {};
 
   const sendMsg = (msg) => {
-    sock.emit("msg-send", { msg }, (ack) => {
-      console.log(ack);
+    sock.emit("msg-send", { msg }, "qfFDo9kc42DxwxcDAAAJ", (ack) => {
       if (ack.ok) {
         //append new msg in chatMessage set msgId status to sent
       } else {

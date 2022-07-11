@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Wcomp.css";
 // import 'bootstrap/dist/css/bootstrap.min.css'
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
 import { useChatMsgContext } from "../Providers/ChatMsgProvider/context";
 import UserSingleComponent from "./UserSingleComponent";
+import { useUserContext } from "../Providers/UserDataProvider/context";
 
 const chatData = [
   { pic: "A", name: "Amit", chat: "Gud morn", time: "11:28 AM" },
@@ -22,7 +23,9 @@ const Wcomp = () => {
   const [inputMsg, SetInputMsg] = useState("");
   const { sendMsg, chatMessages } = useChatMsgContext();
 
+  
   const submitHandler = () => {
+    SetInputMsg("");
     sendMsg(inputMsg);
   };
 
