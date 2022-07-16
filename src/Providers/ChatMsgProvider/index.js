@@ -3,8 +3,7 @@ import ChatMsgContext from "./context";
 import { io } from "socket.io-client";
 import getMessages from "../../api/getMessages";
 
-const sock = io("http://localhost:5000", { autoConnect: true });
-sock.auth = { username: "nilay" };
+const sock = io("https://w-clone-backend.herokuapp.com/");
 
 const ChatMsgProvider = ({ children }) => {
   const [chatMessages, SetChatMessages] = useState([]);
