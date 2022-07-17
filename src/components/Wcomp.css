@@ -147,11 +147,9 @@ pre {
 
 .right .topDetailsWrapper{
     display:flex;
-    /* border:solid; */
     justify-content:space-between;
     background-color: green;;
-
-
+    height: 64px;
 }
 
 .right .topDetailsWrapper .userNameOnlineWrapper{

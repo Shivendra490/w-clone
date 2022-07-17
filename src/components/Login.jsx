@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { setUserInLocalStorage } from "../api/LocalStorage";
 import { loginUser } from "../api/Login";
 import CustomizedSnackbars from "../AtomComponents/CustomizedSnackars";
 import "./RegisterLogin.css";
@@ -25,6 +26,7 @@ const Login = () => {
      const response= await loginUser(userDetails);
      console.log('response',response)
      if (response && response.status==='success'){
+      setUserInLocalStorage(response.data)
       navigate('Wcomp')
      }
      else{

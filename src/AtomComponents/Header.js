@@ -1,12 +1,14 @@
-import React from 'react'
+import React from "react";
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
 
-const Header = () => {
+const Header = ({ currentUser }) => {
   return (
     <div className="topDetailsWrapper">
+      {currentUser.userId && (
+        <>
           <div className="userNameOnlineWrapper">
-            <div className="userName">Alice</div>
+            <div className="userName">{currentUser.username}</div>
             <div className="onOff">online</div>
           </div>
           <div className="dpWrapper">
@@ -18,8 +20,10 @@ const Header = () => {
               <Avatar>L</Avatar>
             </Stack>
           </div>
-        </div>
-  )
-}
+        </>
+      )}
+    </div>
+  );
+};
 
-export default Header
+export default Header;

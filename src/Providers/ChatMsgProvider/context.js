@@ -1,8 +1,12 @@
 import { createContext, useContext } from "react";
 
 const initialValue = {
-  chatMessages: [],
+  chatMessages: {},
   sendMsg: (msg) => {},
+  lastMessages: [],
+  currentUser: {},
+  setCurrentUser: () => {},
+  getRoomMsgById: (receiverId) => {},
 };
 
 const ChatMsgContext = createContext(initialValue);
