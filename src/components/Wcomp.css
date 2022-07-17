@@ -1,333 +1,288 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&family=Montserrat:wght@200&family=Nunito:ital,wght@0,300;1,300&family=Poppins:wght@200;300&display=swap');
-*{
-    padding: 0;
-    margin: 0;
-    /* font-family: 'Montserrat', sans-serif; */
-    font-family: 'Nunito', sans-serif;
-    
-
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300&family=Montserrat:wght@200&family=Nunito:ital,wght@0,300;1,300&family=Poppins:wght@200;300&display=swap");
+* {
+  padding: 0;
+  margin: 0;
+  /* font-family: 'Montserrat', sans-serif; */
+  font-family: "Nunito", sans-serif;
 }
 
 :root {
-    --code-color: darkred;
-    --code-bg-color: #f6f6f6;
-    --code-font-size: 14px;
-    --code-line-height: 1.4;
-    --scroll-bar-color: #c5c5c5;
-    --scroll-bar-bg-color: #f6f6f6;
+  --code-color: darkred;
+  --code-bg-color: #f6f6f6;
+  --code-font-size: 14px;
+  --code-line-height: 1.4;
+  --scroll-bar-color: #c5c5c5;
+  --scroll-bar-bg-color: #f6f6f6;
 }
 
 pre {
-    color: var(--code-color);
-    font-size: var(--code-font-size);
-    line-height: var(--code-line-height);
-    background-color: var(--code-bg-color);
+  color: var(--code-color);
+  font-size: var(--code-font-size);
+  line-height: var(--code-line-height);
+  background-color: var(--code-bg-color);
 }
 
 .code-block {
-    max-height: 100px;
-    overflow: auto;
-    padding: 8px 7px 5px 15px;
-    margin: 0px 0px 0px 0px;
-    border-radius: 7px;
+  max-height: 100px;
+  overflow: auto;
+  padding: 8px 7px 5px 15px;
+  margin: 0px 0px 0px 0px;
+  border-radius: 7px;
 }
 
 * {
-    scrollbar-width: thin;
-    scrollbar-color: var(--scroll-bar-color) var(--scroll-bar-bg-color);
+  scrollbar-width: thin;
+  scrollbar-color: var(--scroll-bar-color) var(--scroll-bar-bg-color);
 }
 
 /* Works on Chrome, Edge, and Safari */
 *::-webkit-scrollbar {
-    width: 10px;
+  width: 10px;
 }
 
 *::-webkit-scrollbar-track {
-    background: var(--scroll-bar-bg-color);
+  background: var(--scroll-bar-bg-color);
 }
 
 *::-webkit-scrollbar-thumb {
-    background-color: var(--scroll-bar-color);
-    border-radius: 20px;
-    border: 3px solid var(--scroll-bar-bg-color);
+  background-color: var(--scroll-bar-color);
+  border-radius: 20px;
+  border: 3px solid var(--scroll-bar-bg-color);
 }
 
-
-
-
-
-
-.left-right-wrapper{
-    display:flex;
-    height:100vh;
-    /* border:2px solid black; */
-    overflow: hidden;
+.left-right-wrapper {
+  display: flex;
+  height: 100vh;
+  /* border:2px solid black; */
+  overflow: hidden;
 }
 
-.left{
-    flex:3;
-    /* border:2px solid black; */
-    display:flex;
-    flex-direction: column;
-    padding:1em;
-    z-index: 1;
-    box-shadow: 5px 5px 5px green;
-
-    
+.left {
+  flex: 3;
+  /* border:2px solid black; */
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+  z-index: 1;
+  box-shadow: 5px 5px 5px green;
 }
 
-.left .chatHeadingWrapper{
-    display:flex;
-    justify-content:space-evenly;
-    backGround-color:rgb(15, 83, 15);
-    height:3em;
-    display:grid;
-    place-content: center;
-    border-radius: 50px;
+.left .chatHeadingWrapper {
+  display: flex;
+  justify-content: space-evenly;
+  background-color: rgb(15, 83, 15);
+  height: 3em;
+  display: grid;
+  place-content: center;
+  border-radius: 50px;
 }
 
-.left .search{
-    width:100%;
-    /* background-color: yellow; */
-    width:100%;
-    height:2.9em;
-    margin:1em 0;
-    text-align: center;
-    border-radius: 50px;
+.left .search {
+  width: 100%;
+ 
+  width: 100%;
+  height: 2.9em;
+  margin: 1em 0;
+  text-align: center;
+  border-radius: 50px;
 }
 
-.left .mainCompWrapper{
-    width:100%;
-    /* background-color: yellow; */
-    width:100%;
-    height:3em;
-    display: flex;
-    justify-content: flex-start;
-    margin:1em 0;
+.left .mainCompWrapper {
+  width: 100%;
+  
+  width: 100%;
+  height: 3em;
+  display: flex;
+  justify-content: flex-start;
+  margin: 1em 0;
 }
 
-
-
-.left .mainCompWrapper .nameChatCombineWrapper{
-    display:flex;
-    flex-direction: column;
-    flex:2;
-
+.left .mainCompWrapper .nameChatCombineWrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 2;
 }
 
-.left .mainCompWrapper .nameChatCombineWrapper .name{
-    padding-top:0.2em;
-    padding-left: 0.7em;
+.left .mainCompWrapper .nameChatCombineWrapper .name {
+  padding-top: 0.2em;
+  padding-left: 0.7em;
 }
 
-.left .mainCompWrapper .nameChatCombineWrapper .chat{
-    padding-top:0.2em;
-    padding-left: 0.7em;
-    text-overflow:hidden;
-    color:grey;
+.left .mainCompWrapper .nameChatCombineWrapper .chat {
+  padding-top: 0.2em;
+  padding-left: 0.7em;
+  overflow: hidden;
+  color: grey;
+  max-width: 75%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
-.left .mainCompWrapper .time{
-    padding-top:0.2em;
-    color:blue;
-    
-
+.left .mainCompWrapper .time {
+  padding-top: 0.2em;
+  color: blue;
+  width: max-content;
 }
 
-
-
-.right{
-    flex:7;
-    /* border:2px solid black; */
-    display:flex;
-    flex-direction: column;
-    justify-content: space-between;
+.right {
+  flex: 7;
+  /* border:2px solid black; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.right .topDetailsWrapper{
-    display:flex;
-    /* border:solid; */
-    justify-content:space-between;
-    background-color: green;;
-
-
+.right .topDetailsWrapper {
+  display: flex;
+  /* border:solid; */
+  justify-content: space-between;
+  background-color: green;
 }
 
-.right .topDetailsWrapper .userNameOnlineWrapper{
-    display:flex;
-    flex-direction: column;
-    /* border:1px solid green; */
-    margin:0.5em 0.8em;
-
+.right .topDetailsWrapper .userNameOnlineWrapper {
+  display: flex;
+  flex-direction: column;
+  /* border:1px solid green; */
+  margin: 0.5em 0.8em;
 }
 
-.right .topDetailsWrapper .userNameOnlineWrapper .userName{
-    font-size: x-large;
-    color:black;
-
+.right .topDetailsWrapper .userNameOnlineWrapper .userName {
+  font-size: x-large;
+  color: black;
 }
 
-.right .topDetailsWrapper .userNameOnlineWrapper .onOff{
-    color:white;
+.right .topDetailsWrapper .userNameOnlineWrapper .onOff {
+  color: white;
 }
 
-.right .topDetailsWrapper .dpWrapper{
-    display:flex;
-    /* border:solid; */
-    margin-right:2%;
-
+.right .topDetailsWrapper .dpWrapper {
+  display: flex;
+  /* border:solid; */
+  margin-right: 2%;
 }
 
-
-.right .chatWrapper{
-    display:flex;
-    flex-direction: column-reverse;
-    /* border:solid; */
-    flex:1;
-    overflow-y: auto
-
-
+.right .chatWrapper {
+  display: flex;
+  flex-direction: column-reverse;
+  /* border:solid; */
+  flex: 1;
+  overflow-y: auto;
 }
 
-.right .chatWrapper .chatLeftRightwrapper{
-    margin: 10px auto;
-    display: flex;
-    flex-direction: column-reverse;
-    width: 80%;
-    gap: 20px;
-    flex: 1;
-    
+.right .chatWrapper .chatLeftRightwrapper {
+  margin: 10px auto;
+  display: flex;
+  flex-direction: column-reverse;
+  width: 80%;
+  gap: 20px;
+  flex: 1;
 }
 
-
-.right .chatWrapper .chat{
-    /* margin: 10px 0;
+.right .chatWrapper .chat {
+  /* margin: 10px 0;
     background-color: aqua;
     min-height: 2em;
     margin:0.5em; */
 
-    
-    
-        /* display: inline-block; */
-        /* border: solid; */
-        display:flex;
-        flex-direction: column;
-        padding: 8px 16px;
-        max-width: 80%;
-        overflow-wrap: break-word;
-        border-radius: 15px;
-        align-self: flex-start;
-        background-color: grey;;
-        color:white;
-
-    
-
-
+  /* display: inline-block; */
+  /* border: solid; */
+  display: flex;
+  flex-direction: column;
+  padding: 8px 16px;
+  max-width: 80%;
+  overflow-wrap: break-word;
+  border-radius: 15px;
+  align-self: flex-start;
+  background-color: grey;
+  color: white;
 }
 
-.right .chatWrapper .chat .tickTimeWrapper{
-    display:flex;
-    justify-content: flex-end;
-    font-size: 10px;
-    align-items: center;
+.right .chatWrapper .chat .tickTimeWrapper {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 10px;
+  align-items: center;
 }
 
-.right .chatWrapper .chat .tickTimeWrapper .rightDoubleTick{
-    padding-left: 2px;
+.right .chatWrapper .chat .tickTimeWrapper .rightDoubleTick {
+  padding-left: 2px;
 }
 
-
-.right .chatInputWrapper{
-    display:flex;
-    border:none;
-    height:60px;
+.right .chatInputWrapper {
+  display: flex;
+  border: none;
+  height: 60px;
 }
 
-.right .chatInputWrapper .chatInput{
-    flex:9;
-    padding:1em;
+.right .chatInputWrapper .chatInput {
+  flex: 9;
+  padding: 1em;
 }
 
-.right .chatInputWrapper .button{
-    /* flex:1;
+.right .chatInputWrapper .button {
+  /* flex:1;
     width:100%; */
 
-    position: absolute;
-    right: 6px;
-    
-    
-   
-    height: 60px;
-    width: 60px;
+  position: absolute;
+  right: 6px;
 
-    border-radius: 50%;
-    
+  height: 60px;
+  width: 60px;
+
+  border-radius: 50%;
 }
 
-
-
-
-
-.chat .left{
-    align-self: flex-start;
+.chat .left {
+  align-self: flex-start;
 }
 
-
-.right .chatWrapper .chatRight{
-    align-self: flex-end;
-    background-color: rgb(15 83 15);
-    
+.right .chatWrapper .chatRight {
+  align-self: flex-end;
+  background-color: rgb(15 83 15);
 }
 
-.rightDoubleTick{
-
+.rightDoubleTick {
 }
 
-.relativeChatWrapper{
-    /* position: absolute; */
-    position: fixed;
-    width: 60px;
-    bottom: 25px;
-    /* right: 0px; */
-    left:25%;
-    height: 60px;
-    color:green;
-    
+.relativeChatWrapper {
+  /* position: absolute; */
+  position: fixed;
+  width: 60px;
+  bottom: 25px;
+  /* right: 0px; */
+  left: 25%;
+  height: 60px;
+  color: green;
 }
 
-.relativeChatButton{
-    width: 100%;
-    height: 100%;
-    border-radius: 50px;
-    background-color: green;
-    display: grid;
-    place-content: center;
+.relativeChatButton {
+  width: 100%;
+  height: 100%;
+  border-radius: 50px;
+  background-color: green;
+  display: grid;
+  place-content: center;
 }
 
-
-
-
-.childModal{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 40%;
-    /* height:50%; */
-    background-color: white;
-    border: solid;
-    /* box-shadow: 24px; */
-    /* pt: 2,
+.childModal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40%;
+  /* height:50%; */
+  background-color: white;
+  border: solid;
+  /* box-shadow: 24px; */
+  /* pt: 2,
     px: 4,
     pb: 3, */
 }
 
-.modalWrapper{
-    display:flex;
-    flex-direction: column;
-    width:100%;
-
+.modalWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 /* 
 .modalInput{
@@ -361,12 +316,3 @@ border:red;
 .classUserId{
 
 } */
-
-
-
-
-
-
-
-
-

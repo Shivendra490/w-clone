@@ -14,6 +14,7 @@ import Modal from "@mui/material/Modal";
 import CloseIcon from "@mui/icons-material/Close";
 import { grey } from "@mui/material/colors";
 import { findUser } from "../api/Chat";
+import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 
 const chatData = [
   { pic: "A", name: "Amit", chat: "Gud morn", time: "11:28 AM" },
@@ -145,6 +146,7 @@ const Wcomp = () => {
               flexDirection: "column",
               padding: "0 16px 16px 16px",
               justifyContent: "space-around",
+              gap:'25px'
             }}
           >
             <h2 style={{ paddingBottom: "8px" }}>Search Users</h2>
@@ -162,7 +164,7 @@ const Wcomp = () => {
             />
             <div
               className="searchedUserWrapper"
-              style={{ display: "flex", height: "60px", width: "100%" }}
+              style={{ display: "flex", height: "60px", width: "100%" ,alignItems:'center',justifyContent:'space-between'}}
             >
               <div
                 className="userAvatarNameWrapper"
@@ -170,10 +172,11 @@ const Wcomp = () => {
                   display: "flex",
                   gap: "6px",
                   alignItems: "center",
-                  marginTop: "3%",
+                  
                   padding: "2%",
                   border: "1px solid grey",
                   borderRadius: "10px",
+                  maxWidth: "60%",
                 }}
               >
                 <div className="userAvatar">
@@ -187,11 +190,25 @@ const Wcomp = () => {
                     <h4>{searchResult.phone}</h4>
                   </div>
                   <div className="classUserName" style={{ color: "grey" }}>
-                    <h6>{searchResult.username}</h6>
+                    <h6
+                      style={{
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        maxWidth: "90%",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      {searchResult.username}
+                    </h6>
                   </div>
                 </div>
               </div>
+              <div className="messageWrite">
+               <span><EmailOutlinedIcon/></span>
+                
+              </div>
             </div>
+          
           </div>
         </div>
       </Modal>
