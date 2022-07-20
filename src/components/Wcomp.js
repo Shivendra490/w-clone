@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./Wcomp.css";
 // import 'bootstrap/dist/css/bootstrap.min.css'
 import { useChatMsgContext } from "../Providers/ChatMsgProvider/context";
@@ -18,7 +18,8 @@ const Wcomp = () => {
   const [inputUser, setInputUser] = useState("");
   const [searchResult, setSearchResult] = useState({});
 
-  const submitHandler = () => {
+  const submitHandler = (e) => {
+    e.preventDefault();
     SetInputMsg("");
     sendMsg(inputMsg);
   };
@@ -66,7 +67,7 @@ const Wcomp = () => {
             </button>
           </div>
           {lastMessages.map((curMsg) => {
-            return <UserSingleComponent data={curMsg} />;
+            return <UserSingleComponent data={curMsg} key={curMsg.msgId} />;
           })}
         </div>
       </div>
@@ -80,7 +81,7 @@ const Wcomp = () => {
       />
 
       <div className="right">
-    <Header currentUser={currentUser} />
+        <Header currentUser={currentUser} />
         <Body chatMessages={chatMessages} currentUserId={currentUser.userId} />
 
         <Footer

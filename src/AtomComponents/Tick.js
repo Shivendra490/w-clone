@@ -6,21 +6,43 @@ const Tick = ({ status }) => {
   let Component;
   switch (status) {
     case "sent": {
-      Component = <DoneOutlinedIcon style={{ fontSize: "small" }} />;
+      Component = (
+        <DoneOutlinedIcon
+          style={{ fontSize: "small", verticalAlign: "middle" }}
+        />
+      );
       break;
     }
     case "delivered": {
-      Component = <DoneAllOutlined style={{ fontSize: "small" }} />;
+      Component = (
+        <DoneAllOutlined
+          style={{ fontSize: "small", verticalAlign: "middle" }}
+        />
+      );
       break;
     }
     case "read": {
       Component = (
-        <DoneAllOutlined style={{ fontSize: "small", color: "skyblue" }} />
+        <DoneAllOutlined
+          style={{
+            fontSize: "small",
+            color: "skyblue",
+            verticalAlign: "middle",
+          }}
+        />
       );
       break;
     }
+    case undefined: {
+      Component = null;
+      break;
+    }
     default: {
-      Component = <ScheduleOutlined style={{ fontSize: "small" }} />;
+      Component = (
+        <ScheduleOutlined
+          style={{ fontSize: "small", verticalAlign: "middle" }}
+        />
+      );
     }
   }
   return Component;

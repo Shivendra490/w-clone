@@ -15,7 +15,6 @@ const Login = () => {
     const name=e.target.name
     const value=e.target.value;
     setUserDetails({...userDetails,[name]:value})
-    console.log(name,value)
   }
 
   
@@ -24,7 +23,6 @@ const Login = () => {
   const handleLoginSubmit = async() => {
     try{
      const response= await loginUser(userDetails);
-     console.log('response',response)
      if (response && response.status==='success'){
       setUserInLocalStorage(response.data)
       navigate('Wcomp')

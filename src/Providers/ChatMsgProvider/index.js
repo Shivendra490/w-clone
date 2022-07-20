@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import ChatMsgContext from "./context";
 import { io } from "socket.io-client";
-import getMessages from "../../api/getMessages";
 import { getUserFromLocalStorage } from "../../api/LocalStorage";
 import {
   getlastMessages,
@@ -15,7 +14,6 @@ const sock = io("http://localhost:5000/", { autoConnect: false });
 const ChatMsgProvider = ({ children }) => {
   const [chatMessages, setChatMessages] = useState({});
   const [lastMessages, setLastMessages] = useState([]);
-  const [userId, setuserId] = useState("");
   const [currentUser, setCurrentUser] = useState({});
 
   const fetchLastMessages = async () => {
@@ -45,38 +43,73 @@ const ChatMsgProvider = ({ children }) => {
     }
   };
 
-  // const sendMessageToNewUser = (userDetails)=>{
-  //   setCurrentUser(userDetails);
-
-  //   setCurrentUser({...chatMessages, []})
-  // }
+  const UpdateRoomStatusFromSocket = useCallback(() => {
+    sock.on("update-room-status", (payload) => {
+      try {
+        const userId = getUserFromLocalStorage().userId;
+        const { receiverId, status } = payload;
+        if (receiverId && status) {
+          if (chatMessages[receiverId]) {
+            setChatMessages({
+              ...chatMessages,
+              ...chatMessages[receiverId].map((chatMsg) => {
+                // check receiverID equality
+                // check if incoming status delivered then status !=read
+                if (chatMsg.receiverId === receiverId) {
+                  chatMsg.status = status;
+                }
+                return chatMsg;
+              }),
+            });
+          }
+          const index = lastMessages.findIndex(
+            (lastMsg) =>
+              lastMsg.senderId === userId && lastMsg.receiverId === receiverId
+          );
+          const cloneLastMsgArray = [...lastMessages];
+          cloneLastMsgArray[index].status = status;
+          setLastMessages(cloneLastMsgArray);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    });
+  }, [chatMessages, lastMessages]);
 
   const receiveMsgFromSocket = useCallback(() => {
     sock.on("msg-receive", (msgObj, confirmation) => {
-      // save msgObj in chatMessage and lastMessage
+      const cloneUserMsgArray = chatMessages[msgObj.senderId] || [];
+      cloneUserMsgArray.unshift(msgObj);
+      setChatMessages({
+        ...chatMessages,
+        [msgObj.senderId]: cloneUserMsgArray,
+      });
+      setLastMessages((lastMessages) => {
+        return [
+          ...lastMessages
+            .map((lastMsg) => {
+              if (lastMsg.userDetails.userId === msgObj.senderId) {
+                return { ...lastMsg, ...msgObj };
+              }
+              return lastMsg;
+            })
+            .sort((a, b) => b.createdAt - a.createdAt),
+        ];
+      });
       if (msgObj.senderId === currentUser.userId) {
         confirmation({ status: "read" });
       } else {
         confirmation({ status: "delivered" });
       }
-      // this will change
-      //setChatMessages([msg, ...chatMessages]);
-      // set message received to proper place
-      // since the msg would be of UNREAD status, bring the unread msg to the top in chatMessage.
     });
-  }, [currentUser]);
-
-  const changeStatusToRead = (roomId, msgId) => {
-    //when particular room is opened then set all of its messages status to read.
-    //send event to socket that msg is read
-    //sock.emit('msg-status-update', {roomId,msgId})
-  };
+  }, [currentUser, chatMessages]);
 
   const sendMsg = async (msg) => {
     const senderId = getUserFromLocalStorage().userId;
+    const receiverId = currentUser.userId;
     const msgObj = {
       senderId,
-      receiverId: currentUser.userId,
+      receiverId: receiverId,
       msgId: uuid(),
       message: msg,
     };
@@ -101,15 +134,13 @@ const ChatMsgProvider = ({ children }) => {
     }
 
     const newMessage = cloneUserMsgArray[0];
-    // set to lastmessage
-
-    // sock.emit("msg-send", { msg }, "qfFDo9kc42DxwxcDAAAJ", (ack) => {
-    //   if (ack.ok) {
-    //     //append new msg in chatMessage set msgId status to sent
-    //   } else {
-    //     //append new msg in chatMessage to pending
-    //   }
-    // });
+    //set last send message to last message
+    const index = lastMessages.findIndex(
+      (lastMsg) => lastMsg.userDetails.userId === receiverId
+    );
+    const cloneLastMsgArray = [...lastMessages];
+    cloneLastMsgArray[index] = { ...lastMessages[index], ...newMessage };
+    setLastMessages(cloneLastMsgArray);
   };
 
   useEffect(() => {
@@ -120,8 +151,12 @@ const ChatMsgProvider = ({ children }) => {
 
   useEffect(() => {
     receiveMsgFromSocket();
-    return () => sock.off("msg-receive");
-  }, [receiveMsgFromSocket]);
+    UpdateRoomStatusFromSocket();
+    return () => {
+      sock.off("msg-receive");
+      sock.off("update-room-status");
+    };
+  }, [receiveMsgFromSocket, UpdateRoomStatusFromSocket]);
 
   useEffect(() => {});
   const values = useMemo(

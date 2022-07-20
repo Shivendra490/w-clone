@@ -1,5 +1,4 @@
 const loginUser = async ({ phone, password }) => {
-  console.log(phone, password);
   try {
     const body = JSON.stringify({ phone, password });
 
@@ -19,7 +18,6 @@ const loginUser = async ({ phone, password }) => {
 };
 
 const registerUser = async ({ userName, phone, password }) => {
-  console.log(userName, phone, password, "registered");
   try {
     const username=userName;
     const body = JSON.stringify({ phone, password, username });
@@ -30,7 +28,6 @@ const registerUser = async ({ userName, phone, password }) => {
       body: body,
     });
     const data = await res.json();
-    console.log(res, data);
     if (data && data.status === "success") {
       return data.user;
     }

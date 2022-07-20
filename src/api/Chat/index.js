@@ -14,7 +14,6 @@ export const findUser = async (phone) => {
       }
     );
     const data = await res.json();
-    console.log("wcompchatapi", data);
     return data;
   } catch (error) {
     throw new Error("internal server error");
@@ -48,7 +47,6 @@ export const getRoomById = async (senderId, receiverId) => {
       body,
     });
     const response = await res.json();
-    console.log(response, "roomcode");
     return response;
   } catch (err) {
     throw err;
