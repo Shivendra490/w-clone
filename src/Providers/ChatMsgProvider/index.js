@@ -31,8 +31,11 @@ const ChatMsgProvider = ({ children }) => {
     }
   };
   const getRoomMsgById = async (currentUserDetails) => {
-    const receiverId = currentUserDetails.userId;
     setCurrentUser({ ...currentUserDetails });
+    if (chatMessages[currentUserDetails.userId] !== undefined) {
+      return;
+    }
+    const receiverId = currentUserDetails.userId;
     const senderId = getUserFromLocalStorage().userId;
     if (!receiverId) {
       return;
@@ -169,7 +172,7 @@ const ChatMsgProvider = ({ children }) => {
       getRoomMsgById,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [chatMessages, lastMessages]
+    [chatMessages, lastMessages, currentUser]
   );
   return (
     <ChatMsgContext.Provider value={values}>{children}</ChatMsgContext.Provider>
