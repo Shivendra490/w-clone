@@ -32,11 +32,14 @@ const ChatMsgProvider = ({ children }) => {
   };
   const getRoomMsgById = async (currentUserDetails) => {
     setCurrentUser({ ...currentUserDetails });
+
+    const receiverId = currentUserDetails.userId;
+    const senderId = getUserFromLocalStorage().userId;
+    sock.emit("open-room", { senderId, receiverId });
+
     if (chatMessages[currentUserDetails.userId] !== undefined) {
       return;
     }
-    const receiverId = currentUserDetails.userId;
-    const senderId = getUserFromLocalStorage().userId;
     if (!receiverId) {
       return;
     }
