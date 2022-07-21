@@ -8,10 +8,18 @@ import {
   sendMessageToUser,
 } from "../../api/Chat";
 import { v4 as uuid } from "uuid";
+import msgReceiveAudio from "../../assets/ding-36029.mp3";
+import useSound from "use-sound";
+import { debounce } from "@mui/material";
 
-const sock = io("http://localhost:5000/", { autoConnect: false });
+//https://w-clone-backend.herokuapp.com
+//http://localhost:5000
+const sock = io("https://w-clone-backend.herokuapp.com", {
+  autoConnect: false,
+});
 
 const ChatMsgProvider = ({ children }) => {
+  const [play] = useSound(msgReceiveAudio);
   const [chatMessages, setChatMessages] = useState({});
   const [lastMessages, setLastMessages] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
@@ -30,19 +38,62 @@ const ChatMsgProvider = ({ children }) => {
       console.log(err);
     }
   };
-  const getRoomMsgById = async (currentUserDetails) => {
-    setCurrentUser({ ...currentUserDetails });
 
-    const receiverId = currentUserDetails.userId;
+  const sendStopTyping = useCallback(
+    debounce(
+      (senderId, receiverId) =>
+        sock.emit("stop-typing", { senderId, receiverId }),
+      1500
+    ),
+    []
+  );
+
+  const sendTyping = useCallback(() => {
     const senderId = getUserFromLocalStorage().userId;
-    sock.emit("open-room", { senderId, receiverId });
+    const receiverId = currentUser.userId;
+    sock.emit("send-typing", { senderId, receiverId });
+    sendStopTyping(senderId, receiverId);
+  }, [currentUser, sendStopTyping]);
 
-    if (chatMessages[currentUserDetails.userId] !== undefined) {
-      return;
-    }
+  const receiveTypingStatusFromSocket = useCallback(() => {
+    sock.on("typing-status", ({ senderId, receiverId, typing }) => {
+      if (currentUser.userId === senderId) {
+        setCurrentUser({ ...currentUser, typing });
+      }
+      const cloneLastMsgArray = [...lastMessages];
+      const index = cloneLastMsgArray.findIndex(
+        (lastMsg) => lastMsg.userDetails.userId === senderId
+      );
+      if (index !== -1) {
+        cloneLastMsgArray[index].userDetails = {
+          ...cloneLastMsgArray[index].userDetails,
+          typing,
+        };
+      }
+      setLastMessages(cloneLastMsgArray);
+    });
+  }, [currentUser, lastMessages]);
+
+  const getRoomMsgById = async (currentUserDetails) => {
+    const receiverId = currentUserDetails.userId;
     if (!receiverId) {
       return;
     }
+    setCurrentUser({ ...currentUserDetails });
+
+    const senderId = getUserFromLocalStorage().userId;
+    setLastMessages((lastMessages) => {
+      const index = lastMessages.findIndex(
+        (lastMsg) => lastMsg.userDetails.userId === receiverId
+      );
+      console.log(index);
+      if (index !== -1) {
+        lastMessages[index].unread = 0;
+      }
+      console.log(lastMessages);
+      return lastMessages;
+    });
+
     const response = await getRoomById(senderId, receiverId);
     if (response && response.status === "success") {
       setChatMessages({ ...chatMessages, [receiverId]: response.data });
@@ -84,6 +135,7 @@ const ChatMsgProvider = ({ children }) => {
 
   const receiveMsgFromSocket = useCallback(() => {
     sock.on("msg-receive", (msgObj, confirmation) => {
+      play();
       const cloneUserMsgArray = chatMessages[msgObj.senderId] || [];
       cloneUserMsgArray.unshift(msgObj);
       setChatMessages({
@@ -95,6 +147,9 @@ const ChatMsgProvider = ({ children }) => {
           ...lastMessages
             .map((lastMsg) => {
               if (lastMsg.userDetails.userId === msgObj.senderId) {
+                if (currentUser.userId !== lastMsg.senderId) {
+                  lastMsg.unread += 1;
+                }
                 return { ...lastMsg, ...msgObj };
               }
               return lastMsg;
@@ -108,7 +163,7 @@ const ChatMsgProvider = ({ children }) => {
         confirmation({ status: "delivered" });
       }
     });
-  }, [currentUser, chatMessages]);
+  }, [currentUser, chatMessages, play]);
 
   const sendMsg = async (msg) => {
     const senderId = getUserFromLocalStorage().userId;
@@ -146,6 +201,7 @@ const ChatMsgProvider = ({ children }) => {
     );
     const cloneLastMsgArray = [...lastMessages];
     cloneLastMsgArray[index] = { ...lastMessages[index], ...newMessage };
+    cloneLastMsgArray.sort((a, b) => b.createdAt - a.createdAt);
     setLastMessages(cloneLastMsgArray);
   };
 
@@ -158,11 +214,17 @@ const ChatMsgProvider = ({ children }) => {
   useEffect(() => {
     receiveMsgFromSocket();
     UpdateRoomStatusFromSocket();
+    receiveTypingStatusFromSocket();
     return () => {
       sock.off("msg-receive");
       sock.off("update-room-status");
+      sock.off("typing-status");
     };
-  }, [receiveMsgFromSocket, UpdateRoomStatusFromSocket]);
+  }, [
+    receiveMsgFromSocket,
+    UpdateRoomStatusFromSocket,
+    receiveTypingStatusFromSocket,
+  ]);
 
   useEffect(() => {});
   const values = useMemo(
@@ -173,6 +235,7 @@ const ChatMsgProvider = ({ children }) => {
       lastMessages,
       setCurrentUser,
       getRoomMsgById,
+      sendTyping,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [chatMessages, lastMessages, currentUser]

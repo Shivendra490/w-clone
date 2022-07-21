@@ -7,6 +7,7 @@ const initialValue = {
   currentUser: {},
   setCurrentUser: () => {},
   getRoomMsgById: (receiverId) => {},
+  sendTyping: () => {},
 };
 
 const ChatMsgContext = createContext(initialValue);

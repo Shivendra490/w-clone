@@ -1,7 +1,7 @@
 import React from "react";
 import SendIcon from "@mui/icons-material/Send";
 
-const Footer = ({ inputMsg, SetInputMsg, submitHandler }) => {
+const Footer = ({ inputMsg, setInputMsgHandler, submitHandler }) => {
   return (
     <form className="chatInputWrapper">
       <input
@@ -9,7 +9,7 @@ const Footer = ({ inputMsg, SetInputMsg, submitHandler }) => {
         className="chatInput"
         placeholder="Enter your message here"
         value={inputMsg}
-        onChange={(e) => SetInputMsg(e.target.value)}
+        onChange={setInputMsgHandler}
       />
       <div className="button">
         <button

@@ -4,6 +4,7 @@ import Stack from "@mui/material/Stack";
 import { useChatMsgContext } from "../Providers/ChatMsgProvider/context";
 import Tick from "../AtomComponents/Tick";
 import { getUserFromLocalStorage } from "../api/LocalStorage";
+import { Badge } from "@mui/material";
 
 const userId = getUserFromLocalStorage().userId;
 const UserSingleComponent = ({ data }) => {
@@ -23,17 +24,20 @@ const UserSingleComponent = ({ data }) => {
         <div className="chat">
           <span>
             {data.senderId === userId && <Tick status={data.status} />}
-            {data.message}
+            {data.userDetails.typing ? "typing..." : data.message}
           </span>
         </div>
       </div>
       <div className="time">
-        <span>
+        <span style={{ display: "block" }}>
           {new Date(data.createdAt).toLocaleString("en-US", {
             hour: "numeric",
             minute: "numeric",
             hour12: true,
           })}
+        </span>
+        <span>
+          <Badge badgeContent={data.unread} color="error" />
         </span>
       </div>
     </div>

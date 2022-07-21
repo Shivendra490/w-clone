@@ -9,7 +9,7 @@ const Header = ({ currentUser }) => {
         <>
           <div className="userNameOnlineWrapper">
             <div className="userName">{currentUser.username}</div>
-            <div className="onOff">online</div>
+            <div className="onOff">{currentUser.typing ? "typing..." : ""}</div>
           </div>
           <div className="dpWrapper">
             <Stack

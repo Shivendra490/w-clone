@@ -9,10 +9,13 @@ import Footer from "../AtomComponents/Footer";
 import ChatIcon from "@mui/icons-material/Chat";
 import { findUser } from "../api/Chat";
 import FindUserModal from "./FindUserModal";
+import sendMsgAudio from "../assets/Google Notification.mp3";
+import { useSound } from "use-sound";
 
 const Wcomp = () => {
+  const [play] = useSound(sendMsgAudio);
   const [inputMsg, SetInputMsg] = useState("");
-  const { sendMsg, chatMessages, lastMessages, currentUser } =
+  const { sendMsg, chatMessages, lastMessages, currentUser, sendTyping } =
     useChatMsgContext();
   const [open, setOpen] = useState(false);
   const [inputUser, setInputUser] = useState("");
@@ -21,6 +24,8 @@ const Wcomp = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     SetInputMsg("");
+    play();
+
     sendMsg(inputMsg);
   };
 
@@ -35,6 +40,12 @@ const Wcomp = () => {
         setSearchResult(response.data);
       }
     }
+  };
+
+  const setInputMsgHandler = (e) => {
+    sendTyping();
+    const { value } = e.target;
+    SetInputMsg(value);
   };
 
   const handleChatClick = () => {
@@ -87,7 +98,7 @@ const Wcomp = () => {
         <Footer
           submitHandler={submitHandler}
           inputMsg={inputMsg}
-          SetInputMsg={SetInputMsg}
+          setInputMsgHandler={setInputMsgHandler}
         />
       </div>
     </div>
