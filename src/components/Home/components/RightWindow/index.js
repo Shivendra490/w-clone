@@ -17,7 +17,6 @@ const RightWindow = () => {
     if (!inputMsg) {
       return;
     }
-
     play();
     sendMsg(inputMsg);
     SetInputMsg("");
@@ -37,6 +36,7 @@ const RightWindow = () => {
         submitHandler={submitHandler}
         inputMsg={inputMsg}
         setInputMsgHandler={setInputMsgHandler}
+        setInputMsg={SetInputMsg}
       />
     </div>
   );

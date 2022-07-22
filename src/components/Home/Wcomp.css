@@ -65,6 +65,7 @@ pre {
   z-index: 1;
   box-shadow: 1px 1px 15px black;
   border-right: solid;
+  background-color: cornsilk;
 }
 
 .left .mainCompWrapper {
@@ -149,6 +150,7 @@ pre {
   flex-direction: column-reverse;
   flex: 1;
   overflow-y: auto;
+  background-color: cornsilk;
 }
 
 .right .chatWrapper .chatLeftRightwrapper {
@@ -191,8 +193,7 @@ pre {
 }
 
 .right .chatInputWrapper .button {
-  position: absolute;
-  right: 6px;
+  right: 0;
   height: 60px;
   width: 60px;
   border-radius: 50%;

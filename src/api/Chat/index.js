@@ -1,4 +1,4 @@
-import { BASE_URL_DEV } from "../../Constants/url";
+import { BASE_URL_DEV, BASE_URL } from "../../Constants/url";
 
 export const findUser = async (phone) => {
   try {
@@ -41,7 +41,7 @@ export const getRoomById = async (senderId, receiverId) => {
       senderId,
       receiverId,
     });
-    const res = await fetch(`${BASE_URL_DEV}/getRoomById`, {
+    const res = await fetch(`${BASE_URL}/getRoomById`, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body,
@@ -56,18 +56,14 @@ export const getRoomById = async (senderId, receiverId) => {
 export const sendMessageToUser = async (msgObj) => {
   try {
     const body = JSON.stringify(msgObj);
-    const res = await fetch(
-      `${BASE_URL_DEV}/sendMessage`,
-      {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body,
-      }
-    );
+    const res = await fetch(`${BASE_URL}/sendMessage`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body,
+    });
     const response = await res.json();
     return response;
   } catch (err) {
     throw err;
   }
 };
-

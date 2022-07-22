@@ -3,7 +3,7 @@ import "./styles.css";
 
 const ChatButton = ({ Icon, onClick, flip }) => {
   return (
-    <button className="chat-button" onClick={onClick} type="submit">
+    <button className="chat-button" onClick={onClick} >
       {Icon}
     </button>
   );

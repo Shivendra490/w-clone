@@ -14,7 +14,7 @@ import { debounce } from "@mui/material";
 
 //https://w-clone-backend.herokuapp.com
 //http://localhost:5000
-const sock = io("http://localhost:5000", {
+const sock = io("https://w-clone-backend.herokuapp.com", {
   autoConnect: false,
 });
 
@@ -146,7 +146,7 @@ const ChatMsgProvider = ({ children }) => {
           ...lastMessages
             .map((lastMsg) => {
               if (lastMsg.userDetails.userId === msgObj.senderId) {
-                if (currentUser.userId !== lastMsg.senderId) {
+                if (currentUser.userId !== lastMsg.userDetails.userId) {
                   lastMsg.unread += 1;
                 }
                 return { ...lastMsg, ...msgObj };

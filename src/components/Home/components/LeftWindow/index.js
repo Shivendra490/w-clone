@@ -7,7 +7,9 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import InputBox from "../../../../AtomComponents/InputBox";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import ChatButton from "../../../../AtomComponents/ChatButtons";
+import { getUserFromLocalStorage } from "../../../../api/LocalStorage";
 
+const currentUser = getUserFromLocalStorage();
 const LeftWindow = ({ handleChatClick }) => {
   const { lastMessages } = useChatMsgContext();
   const [data, setData] = useState(lastMessages);
@@ -40,8 +42,13 @@ const LeftWindow = ({ handleChatClick }) => {
           padding: "4px",
         }}
       >
-        <div style={{ marginLeft: "2%" }}>
-          <Avatar>L</Avatar>
+        <div
+          style={{ marginLeft: "2%", display: "flex", alignItems: "center" }}
+        >
+          <Avatar>
+            {currentUser.username &&
+              currentUser.username.slice(0, 1).toUpperCase()}
+          </Avatar>
         </div>
         <div>
           <MoreVertIcon />
@@ -53,6 +60,7 @@ const LeftWindow = ({ handleChatClick }) => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          backgroundColor: "black",
         }}
       >
         <InputBox
@@ -61,7 +69,7 @@ const LeftWindow = ({ handleChatClick }) => {
           icon={true}
         />
         <div
-          style={{ display: "grid", padding: "4px" }}
+          style={{ display: "grid", padding: "4px", color: "white" }}
           className={filter ? "filter-icon" : ""}
         >
           <FilterListIcon onClick={toggleFilter} />
@@ -79,6 +87,7 @@ const LeftWindow = ({ handleChatClick }) => {
         <div className="relativeChatWrapper">
           <ChatButton
             onClick={handleChatClick}
+            type="submit"
             Icon={<ChatIcon style={{ fill: "white" }} />}
           />
         </div>

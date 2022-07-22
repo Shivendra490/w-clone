@@ -4,22 +4,21 @@
   padding-left: 36px;
   font-size: large;
   border: none;
-  background-color: grey;
   border: 2px solid grey;
+  background-color: grey;
   color: white;
-}
-
-.input-box.icon{
-  background: url(https://static.thenounproject.com/png/101791-200.png)
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  /* background: url(https://static.thenounproject.com/png/101791-200.png)
     no-repeat left;
   background-size: 20px;
-  background-position: 8px;
+  background-position: 8px; */
 }
 
-.input-box.icon:hover,
-.input-box.icon:focus,
-.input-box.icon:active {
-  border: none;
+.input-box:hover,
+.input-box:focus,
+.input-box:active {
   outline: none;
 }
 
