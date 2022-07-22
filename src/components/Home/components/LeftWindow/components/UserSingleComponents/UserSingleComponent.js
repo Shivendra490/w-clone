@@ -1,9 +1,9 @@
 import React from "react";
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
-import { useChatMsgContext } from "../Providers/ChatMsgProvider/context";
-import Tick from "../AtomComponents/Tick";
-import { getUserFromLocalStorage } from "../api/LocalStorage";
+import { useChatMsgContext } from "../../../../../../Providers/ChatMsgProvider/context";
+import Tick from "../../../../../../AtomComponents/Tick";
+import { getUserFromLocalStorage } from "../../../../../../api/LocalStorage";
 import { Badge } from "@mui/material";
 
 const userId = getUserFromLocalStorage().userId;

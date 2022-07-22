@@ -1,11 +1,8 @@
 import "./App.css";
-import Integrate from "./components/Integrate";
-import LabTabs from "./components/LabTabs";
-import Login from "./components/Login";
-import Register from "./components/Register";
-import Wcomp from "./components/Wcomp";
 import ChatMsgProvider from "./Providers/ChatMsgProvider";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Integrate from "./components/Login/Integrate";
+import Wcomp from "./components/Home/Wcomp";
 
 function App() {
   return (

@@ -8,8 +8,18 @@ const Header = ({ currentUser }) => {
       {currentUser.userId && (
         <>
           <div className="userNameOnlineWrapper">
-            <div className="userName">{currentUser.username}</div>
-            <div className="onOff">{currentUser.typing ? "typing..." : ""}</div>
+            <div className="userName">
+              <span>{currentUser.username}</span>
+            </div>
+            <div className="onOff">
+              {(currentUser.typing || currentUser.online) && (
+                <span>
+                  {currentUser.typing
+                    ? "typing..."
+                    : currentUser.online && "online"}
+                </span>
+              )}
+            </div>
           </div>
           <div className="dpWrapper">
             <Stack

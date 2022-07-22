@@ -23,7 +23,7 @@ const Body = ({ chatMessages, currentUserId }) => {
                       hour: "numeric",
                       minute: "numeric",
                       hour12: true,
-                    })}
+                    }).toLocaleLowerCase()}
                   </span>
                   <span className="rightDoubleTick">
                     {msg.senderId === id && <Tick status={msg.status} />}

@@ -1,29 +1,26 @@
 import React from "react";
 import SendIcon from "@mui/icons-material/Send";
+import ChatButton from "./ChatButtons";
+import InputBox from "./InputBox";
 
 const Footer = ({ inputMsg, setInputMsgHandler, submitHandler }) => {
   return (
-    <form className="chatInputWrapper">
-      <input
-        type="text"
-        className="chatInput"
-        placeholder="Enter your message here"
-        value={inputMsg}
-        onChange={setInputMsgHandler}
-      />
-      <div className="button">
-        <button
-          style={{
-            width: "100%",
-            height: "100%",
-            backgroundColor: "green",
-            borderRadius: "50px",
-          }}
-          type="submit"
-          onClick={submitHandler}
-        >
-          <SendIcon style={{ color: "white" }} />
-        </button>
+    <form style={{ padding: "4px 16px" }}>
+      <div className="chatInputWrapper">
+        <InputBox
+          value={inputMsg}
+          onChange={setInputMsgHandler}
+          placeholder="Enter your message here"
+          height="48px"
+        />
+        <div className="button">
+          {inputMsg && (
+            <ChatButton
+              Icon={<SendIcon style={{ color: "white" }} />}
+              onClick={submitHandler}
+            />
+          )}
+        </div>
       </div>
     </form>
   );

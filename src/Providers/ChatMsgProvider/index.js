@@ -14,7 +14,7 @@ import { debounce } from "@mui/material";
 
 //https://w-clone-backend.herokuapp.com
 //http://localhost:5000
-const sock = io("https://w-clone-backend.herokuapp.com", {
+const sock = io("http://localhost:5000", {
   autoConnect: false,
 });
 
@@ -39,6 +39,7 @@ const ChatMsgProvider = ({ children }) => {
     }
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const sendStopTyping = useCallback(
     debounce(
       (senderId, receiverId) =>
@@ -86,11 +87,9 @@ const ChatMsgProvider = ({ children }) => {
       const index = lastMessages.findIndex(
         (lastMsg) => lastMsg.userDetails.userId === receiverId
       );
-      console.log(index);
       if (index !== -1) {
         lastMessages[index].unread = 0;
       }
-      console.log(lastMessages);
       return lastMessages;
     });
 
@@ -168,6 +167,9 @@ const ChatMsgProvider = ({ children }) => {
   const sendMsg = async (msg) => {
     const senderId = getUserFromLocalStorage().userId;
     const receiverId = currentUser.userId;
+    if (!receiverId || !senderId) {
+      return;
+    }
     const msgObj = {
       senderId,
       receiverId: receiverId,

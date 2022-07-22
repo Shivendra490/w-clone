@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { setUserInLocalStorage } from "../api/LocalStorage";
-import { loginUser } from "../api/Login";
-import CustomizedSnackbars from "../AtomComponents/CustomizedSnackars";
+import { setUserInLocalStorage } from "../../api/LocalStorage";
+import { loginUser } from "../../api/Login";
+import CustomizedSnackbars from "../../AtomComponents/CustomizedSnackars";
 import "./RegisterLogin.css";
 
 
