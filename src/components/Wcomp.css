@@ -137,6 +137,7 @@ pre {
   /* border:solid; */
   justify-content: space-between;
   background-color: green;
+  padding:0.2em;
 }
 
 .right .topDetailsWrapper .userNameOnlineWrapper {
@@ -153,6 +154,8 @@ pre {
 
 .right .topDetailsWrapper .userNameOnlineWrapper .onOff {
   color: white;
+  
+ 
 }
 
 .right .topDetailsWrapper .dpWrapper {

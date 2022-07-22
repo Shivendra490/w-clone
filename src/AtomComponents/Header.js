@@ -3,12 +3,12 @@ import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
 
 const Header = ({currentUser}) => {
-
+console.log(currentUser)
   return (
     <div className="topDetailsWrapper">
           <div className="userNameOnlineWrapper">
             <div className="userName">{currentUser.username && currentUser.username}</div>
-            <div className="onOff">online</div>
+            <div className="onOff"><span>{currentUser.typing && 'typing...'}</span></div>
           </div>
           <div className="dpWrapper">
             <Stack

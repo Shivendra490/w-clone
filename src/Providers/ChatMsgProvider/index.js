@@ -17,6 +17,8 @@ const ChatMsgProvider = ({ children }) => {
   const [userId, setuserId] = useState("");
   const [currentUser, setCurrentUser] = useState({});
 
+  console.log(currentUser);
+
   const fetchLastMessages = async () => {
     try {
       const { userId } = getUserDetails();
@@ -77,8 +79,8 @@ const ChatMsgProvider = ({ children }) => {
   const receiveMsgFromSocket = useCallback(() => {
    
     sock.on("msg-receive", (msg, callback) => {
-     console.log('payload',msg)
-     console.log('currentuser',currentUser)
+    //  console.log('payload',msg)
+    //  console.log('currentuser',currentUser)
       const msgsenderId = msg.senderId;
       msgsenderId in chatMessages &&
         setChatMessages({
@@ -98,7 +100,7 @@ const ChatMsgProvider = ({ children }) => {
             return { ...curElem, ...msg};
           }
           return curElem;
-        });
+        }).sort((a,b)=>b.createdAt-a.createdAt)
        
 
         setLastMessages(x);
@@ -119,6 +121,65 @@ const ChatMsgProvider = ({ children }) => {
   }, [chatMessages, lastMessages,currentUser]);
 
 
+  const updateMessageStatus=useCallback(()=>{
+    
+
+      sock.on('update-room-status',(data)=>{
+        // console.log('126',data)
+        // console.log('127',chatMessages);
+        console.log(lastMessages)
+        const {receiverId,status}=data;
+
+        const arrayValue=chatMessages[receiverId]
+
+        const x=arrayValue.map((curObj)=>{
+          if (curObj.senderId===getUserDetails().userId){
+              curObj.status=status   
+          }
+          return curObj
+        })
+
+
+        setChatMessages({...chatMessages,[receiverId]:x})
+
+        const y=lastMessages.map((curElem)=>{
+          if(curElem.senderId===getUserDetails().userId && curElem.userDetails.userId===receiverId){
+            curElem.status=status
+          }
+          return curElem
+        })
+
+        setLastMessages(y)
+
+      
+      })
+       
+//{{}:[],{}:[]}
+//{ } {} {}
+        
+        
+
+    
+  },[chatMessages])
+
+
+
+
+  const updateTypingStatus=useCallback(()=>{
+    
+
+    sock.on('typing-status',(data)=>{
+     console.log('170',data)
+     if(currentUser.userId===data.senderId){
+      setCurrentUser({...currentUser,typing:data.typing})
+     }
+    
+    
+    
+    }
+     
+     )
+    },[currentUser])
  
 
   
@@ -175,7 +236,7 @@ const ChatMsgProvider = ({ children }) => {
       if (response && response.status === "success") {
        
         const value = response.data;
-        console.log(response);
+        // console.log(response);
         setChatMessages({
           ...chatMessages,
           [value.receiverId]: [value, ...chatMessages[value.receiverId]],
@@ -206,10 +267,15 @@ const ChatMsgProvider = ({ children }) => {
 
   useEffect(() => {
     receiveMsgFromSocket();
-    return () => sock.off("msg-receive");
-  }, [receiveMsgFromSocket]);
+    updateMessageStatus()
+    updateTypingStatus()
+    return () => {sock.off("msg-receive");
+  sock.off("update-room-status");
+sock.off("typing-status")};
+    
+  }, [receiveMsgFromSocket,updateMessageStatus,updateTypingStatus]);
 
-  useEffect(() => {});
+ 
 
   const values = useMemo(
     () => ({
