@@ -30,9 +30,13 @@ const registerUser = async ({ userName, phone, password }) => {
       body: body,
     });
     const data = await res.json();
-    console.log(res, data);
+    console.log("33",res,"44" ,data);
     if (data && data.status === "success") {
-      return data.user;
+      return data;
+      // return data.user
+    }
+    else{
+      return data
     }
   } catch (error) {
     console.log(error);

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { registerUser } from "../api/Login";
+import CustomizedSnackbars from "../AtomComponents/CustomizedSnackars";
 import "./RegisterLogin.css";
 
 const Register = (props) => {
@@ -9,9 +10,34 @@ const Register = (props) => {
     password: "",
   });
 
-  const handleRegisterSubmit = () => {
-    registerUser(registerUserDetails);
+  const [snack,setSnack]=useState('')
+
+  // const handleRegisterSubmit = () => {
+  //   registerUser(registerUserDetails);
+  // };
+
+  const handleRegisterSubmit = async() => {
+    try{
+     const response= await registerUser(registerUserDetails);
+     console.log('responsehkh jjjjjjjj',response)
+     if (response && response.status==='success'){
+      setSnack(response.status)
+      // setUserId(response.data)
+      // navigate('Wcomp')
+     }
+     else{
+      console.log('29 mess',response.msg)//toast
+      setSnack(response.msg)
+      
+     }
+    }
+    catch(error){
+      console.log('35error')
+      setSnack(error.message)
+    }
   };
+
+
   const userInputChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -19,6 +45,7 @@ const Register = (props) => {
   };
   return (
     <>
+    {snack && <CustomizedSnackbars msg={snack} setSnackErr={setSnack}/>}
       {/* <div className="mainWrapper">
       <div className="registerWrapper"> */}
       <div className="fieldComponentWrapper">

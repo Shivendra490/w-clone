@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { setUserId } from "../api/LocalStorage";
 import { loginUser } from "../api/Login";
 import CustomizedSnackbars from "../AtomComponents/CustomizedSnackars";
 import "./RegisterLogin.css";
@@ -25,6 +26,7 @@ const Login = () => {
      const response= await loginUser(userDetails);
      console.log('response',response)
      if (response && response.status==='success'){
+      setUserId(response.data)
       navigate('Wcomp')
      }
      else{
@@ -34,6 +36,7 @@ const Login = () => {
      }
     }
     catch(error){
+      console.log(error.message,'39')
       setSnackErr(error.message)
     }
   };

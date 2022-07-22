@@ -1,4 +1,4 @@
-import { isFocusable } from "@testing-library/user-event/dist/utils"
+// import { isFocusable } from "@testing-library/user-event/dist/utils"
 
 const WAPPUSERID='WAPPUSERID'
 
@@ -8,12 +8,13 @@ const getUserDetails=()=>{
     if(userDetails){
         return JSON.parse(userDetails)
     }
-    return ""
+    return {}
 }
 
 const setUserId=(id)=>{
     
     localStorage.setItem(WAPPUSERID,JSON.stringify(id))
+    
     
 }
 

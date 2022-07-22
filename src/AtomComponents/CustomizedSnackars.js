@@ -11,6 +11,8 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 export default function CustomizedSnackbars(props) {
   const [open, setOpen] = React.useState(true);
   // setOpen(true)
+  
+  
 
   
 
@@ -22,12 +24,13 @@ export default function CustomizedSnackbars(props) {
     setOpen(false);
 
   };
+  
 
   return (
     <Stack spacing={2} sx={{ width: '100%' }}>
       
       <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
+        <Alert onClose={handleClose} severity={props.msg==="success" ? `${props.msg}` :"warning"} sx={{ width: '100%' }}>
           {props.msg}
         </Alert>
       </Snackbar>

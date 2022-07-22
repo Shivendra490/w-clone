@@ -62,7 +62,7 @@ pre {
   /* border:2px solid black; */
   display: flex;
   flex-direction: column;
-  padding: 1em;
+  padding: 1em 2px 1em 2px;
   z-index: 1;
   box-shadow: 5px 5px 5px green;
 }
@@ -245,12 +245,12 @@ pre {
 }
 
 .relativeChatWrapper {
-  /* position: absolute; */
-  position: fixed;
+  position: absolute;
+  /* position: fixed; */
   width: 60px;
   bottom: 25px;
-  /* right: 0px; */
-  left: 25%;
+  right: 1%;
+  /* left: 25%; */
   height: 60px;
   color: green;
 }
