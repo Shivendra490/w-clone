@@ -1,7 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import SendIcon from "@mui/icons-material/Send";
-import ChatButton from "./ChatButtons";
-import InputBox from "./InputBox";
+import ChatButton from "../../../../../../AtomComponents/ChatButtons";
+import InputBox from "../../../../../../AtomComponents/InputBox";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import EmojiPicker from "emoji-picker-react";
 import { ClickAwayListener } from "@mui/material";

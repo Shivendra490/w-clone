@@ -13,17 +13,18 @@ const Wcomp = () => {
   const handleChangeFindUser = async (e) => {
     const { value } = e.target;
     setInputUser(value);
-
-    if (value) {
+    if (value.length > 10) {
+      return;
+    }
+    if (value.length === 10) {
       const response = await findUser(value);
-
       if (response && response.status === "success") {
         setSearchResult(response.data);
       }
     }
   };
 
-  const handleChatClick = (e) => {
+  const handleNewMessageClick = (e) => {
     e.preventDefault();
     setOpen(true);
   };
@@ -34,7 +35,7 @@ const Wcomp = () => {
 
   return (
     <div className="left-right-wrapper">
-      <LeftWindow handleChatClick={handleChatClick} />
+      <LeftWindow handleNewMessageClick={handleNewMessageClick} />
       <FindUserModal
         open={open}
         handleChangeFindUser={handleChangeFindUser}

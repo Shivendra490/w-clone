@@ -1,0 +1,10 @@
+.popover {
+  position: absolute;
+  min-height: 10px;
+  width: clamp(200px, 1%, 350px);
+  display: flex;
+  flex-direction: column;
+  background-color: black;
+  opacity: 0.8;
+  color: white;
+}

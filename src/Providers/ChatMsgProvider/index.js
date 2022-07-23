@@ -1,7 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import ChatMsgContext from "./context";
 import { io } from "socket.io-client";
-import { getUserFromLocalStorage } from "../../api/LocalStorage";
+import {
+  deleteUserInLocalStorage,
+  getUserFromLocalStorage,
+} from "../../api/LocalStorage";
 import {
   getlastMessages,
   getRoomById,
@@ -11,10 +14,10 @@ import { v4 as uuid } from "uuid";
 import msgReceiveAudio from "../../assets/ding-36029.mp3";
 import useSound from "use-sound";
 import { debounce } from "@mui/material";
+import { BASE_URL } from "../../Constants/url";
+import { useNavigate } from "react-router-dom";
 
-//https://w-clone-backend.herokuapp.com
-//http://localhost:5000
-const sock = io("https://w-clone-backend.herokuapp.com", {
+const sock = io(BASE_URL, {
   autoConnect: false,
 });
 
@@ -23,6 +26,7 @@ const ChatMsgProvider = ({ children }) => {
   const [chatMessages, setChatMessages] = useState({});
   const [lastMessages, setLastMessages] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
+  const navigate = useNavigate();
 
   const fetchLastMessages = async () => {
     try {
@@ -74,6 +78,14 @@ const ChatMsgProvider = ({ children }) => {
       setLastMessages(cloneLastMsgArray);
     });
   }, [currentUser, lastMessages]);
+
+  const receiveOnlineStatusFromSocket = useCallback(() => {
+    sock.on("user-online", ({ receiverId, online }) => {
+      if (currentUser.userId === receiverId) {
+        setCurrentUser({ ...currentUser, online });
+      }
+    });
+  }, [currentUser]);
 
   const getRoomMsgById = async (currentUserDetails) => {
     const receiverId = currentUserDetails.userId;
@@ -207,6 +219,11 @@ const ChatMsgProvider = ({ children }) => {
     setLastMessages(cloneLastMsgArray);
   };
 
+  const logoutUser = () => {
+    deleteUserInLocalStorage();
+    navigate("/");
+  };
+
   useEffect(() => {
     fetchLastMessages();
     sock.auth = { userId: getUserFromLocalStorage().userId };
@@ -215,18 +232,29 @@ const ChatMsgProvider = ({ children }) => {
 
   useEffect(() => {
     receiveMsgFromSocket();
-    UpdateRoomStatusFromSocket();
-    receiveTypingStatusFromSocket();
     return () => {
       sock.off("msg-receive");
+    };
+  }, [receiveMsgFromSocket]);
+
+  useEffect(() => {
+    UpdateRoomStatusFromSocket();
+    return () => {
       sock.off("update-room-status");
+    };
+  }, [UpdateRoomStatusFromSocket]);
+
+  useEffect(() => {
+    receiveTypingStatusFromSocket();
+    return () => {
       sock.off("typing-status");
     };
-  }, [
-    receiveMsgFromSocket,
-    UpdateRoomStatusFromSocket,
-    receiveTypingStatusFromSocket,
-  ]);
+  }, [receiveTypingStatusFromSocket]);
+
+  useEffect(() => {
+    receiveOnlineStatusFromSocket();
+    return () => sock.off("user-online");
+  }, [receiveOnlineStatusFromSocket]);
 
   useEffect(() => {});
   const values = useMemo(
@@ -238,6 +266,7 @@ const ChatMsgProvider = ({ children }) => {
       setCurrentUser,
       getRoomMsgById,
       sendTyping,
+      logoutUser,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [chatMessages, lastMessages, currentUser]

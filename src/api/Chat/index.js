@@ -1,18 +1,14 @@
-import { BASE_URL_DEV, BASE_URL } from "../../Constants/url";
+import { BASE_URL } from "../../Constants/url";
 
 export const findUser = async (phone) => {
   try {
     const body = JSON.stringify({ phone });
 
-    const res = await fetch(
-      `https://w-clone-backend.herokuapp.com/searchUser`,
-      {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: body,
-        // mode:'no-cors'
-      }
-    );
+    const res = await fetch(`${BASE_URL}/searchUser`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: body,
+    });
     const data = await res.json();
     return data;
   } catch (error) {
@@ -23,7 +19,7 @@ export const findUser = async (phone) => {
 export const getlastMessages = async (userId) => {
   try {
     const body = JSON.stringify({ userId });
-    const res = await fetch(`${BASE_URL_DEV}/getLastConversations`, {
+    const res = await fetch(`${BASE_URL}/getLastConversations`, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body,

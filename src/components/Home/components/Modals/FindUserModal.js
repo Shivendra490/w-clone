@@ -35,6 +35,7 @@ const FindUserModal = ({
             placeholder="search here"
             value={inputUser}
             onChange={handleChangeFindUser}
+            maxLength={10}
             style={{
               borderRadius: "20px",
               height: "40px",

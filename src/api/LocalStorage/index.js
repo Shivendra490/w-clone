@@ -12,4 +12,8 @@ const setUserInLocalStorage = (userDetails) => {
   localStorage.setItem(WAPPUSERID, JSON.stringify(userDetails));
 };
 
-export { getUserFromLocalStorage, setUserInLocalStorage };
+const deleteUserInLocalStorage = () => {
+  localStorage.removeItem(WAPPUSERID);
+};
+
+export { getUserFromLocalStorage, setUserInLocalStorage, deleteUserInLocalStorage };

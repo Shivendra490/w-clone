@@ -28,7 +28,6 @@ const Login = () => {
       navigate('Wcomp')
      }
      else{
-      console.log(response.msg)//toast
       setSnackErr(response.msg)
       
      }

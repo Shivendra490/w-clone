@@ -8,15 +8,21 @@ import InputBox from "../../../../AtomComponents/InputBox";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import ChatButton from "../../../../AtomComponents/ChatButtons";
 import { getUserFromLocalStorage } from "../../../../api/LocalStorage";
+import Popover from "../../../../AtomComponents/Popover";
 
 const currentUser = getUserFromLocalStorage();
-const LeftWindow = ({ handleChatClick }) => {
-  const { lastMessages } = useChatMsgContext();
+const LeftWindow = ({ handleNewMessageClick }) => {
+  const { lastMessages, getRoomMsgById, logoutUser } = useChatMsgContext();
   const [data, setData] = useState(lastMessages);
   const [filter, setFilter] = useState(false);
+  const [openPopover, setOpenPopover] = useState(false);
 
   const toggleFilter = () => {
     setFilter(!filter);
+  };
+
+  const onRoomClickHandler = (userDetails) => {
+    getRoomMsgById(userDetails);
   };
 
   useEffect(() => {
@@ -29,6 +35,17 @@ const LeftWindow = ({ handleChatClick }) => {
       setData(lastMessages);
     }
   }, [filter, lastMessages]);
+
+  const togglePopover = () => {
+    setOpenPopover(true);
+  };
+  const handleClose = () => {
+    setOpenPopover(false);
+  };
+
+  const onLogoutHandler = () => {
+    logoutUser();
+  };
 
   return (
     <div className="left">
@@ -50,8 +67,13 @@ const LeftWindow = ({ handleChatClick }) => {
               currentUser.username.slice(0, 1).toUpperCase()}
           </Avatar>
         </div>
-        <div>
-          <MoreVertIcon />
+        <div style={{ position: "relative" }} onClick={togglePopover}>
+          <MoreVertIcon style={{ cursor: "pointer" }} />
+          <Popover open={openPopover} handleClose={handleClose}>
+            <span className="popover-elements" onClick={onLogoutHandler}>
+              Logout
+            </span>
+          </Popover>
         </div>
       </div>
       <div
@@ -86,13 +108,19 @@ const LeftWindow = ({ handleChatClick }) => {
       >
         <div className="relativeChatWrapper">
           <ChatButton
-            onClick={handleChatClick}
+            onClick={handleNewMessageClick}
             type="submit"
             Icon={<ChatIcon style={{ fill: "white" }} />}
           />
         </div>
         {data.map((curMsg) => {
-          return <UserSingleComponent data={curMsg} key={curMsg.msgId} />;
+          return (
+            <UserSingleComponent
+              data={curMsg}
+              handleRoomClick={onRoomClickHandler}
+              key={curMsg.msgId}
+            />
+          );
         })}
       </div>
     </div>

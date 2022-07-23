@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useChatMsgContext } from "../../../../Providers/ChatMsgProvider/context";
-import Header from "../../../../AtomComponents/Header";
+import Header from "./components/Header";
 import Body from "../../../../AtomComponents/Body";
-import Footer from "../../../../AtomComponents/Footer";
+import Footer from "./components/Footer";
 import sendMsgAudio from "../../../../assets/Google Notification.mp3";
 import { useSound } from "use-sound";
 
