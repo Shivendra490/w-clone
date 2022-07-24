@@ -29,7 +29,7 @@ const Footer = ({
       <div className="chatInputWrapper">
         {emojiOpen && (
           <ClickAwayListener onClickAway={() => setEmojiOpen(false)}>
-            <div style={{ position: "absolute", bottom: 70, right: 0 }}>
+            <div style={{ position: "absolute", bottom: 70, left: 0 }}>
               {emojiOpen && <EmojiPicker onEmojiClick={onEmojiClickhadler} />}
             </div>
           </ClickAwayListener>
