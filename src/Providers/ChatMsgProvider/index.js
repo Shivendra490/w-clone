@@ -124,7 +124,19 @@ const ChatMsgProvider = ({ children }) => {
                 // check receiverID equality
                 // check if incoming status delivered then status !=read
                 if (chatMsg.receiverId === receiverId) {
-                  chatMsg.status = status;
+                  switch (status) {
+                    case "delivered":
+                      if (chatMsg.status === "sent") {
+                        chatMsg.status = status;
+                      }
+                      break;
+                    case "read":
+                      if (chatMsg.status !== "read") {
+                        chatMsg.status = status;
+                      }
+                      break;
+                    default:
+                  }
                 }
                 return chatMsg;
               }),
@@ -219,6 +231,10 @@ const ChatMsgProvider = ({ children }) => {
     setLastMessages(cloneLastMsgArray);
   };
 
+  const sendMsgNewUser = (newUserDetails) => {
+    setCurrentUser(newUserDetails);
+  };
+
   const logoutUser = () => {
     deleteUserInLocalStorage();
     navigate("/");
@@ -266,6 +282,7 @@ const ChatMsgProvider = ({ children }) => {
       setCurrentUser,
       getRoomMsgById,
       sendTyping,
+      sendMsgNewUser,
       logoutUser,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps

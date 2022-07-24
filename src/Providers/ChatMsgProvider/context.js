@@ -8,6 +8,7 @@ const initialValue = {
   setCurrentUser: () => {},
   getRoomMsgById: (receiverId) => {},
   sendTyping: () => {},
+  sendMsgNewUser: () => {},
   logoutUser: () => {},
 };
 

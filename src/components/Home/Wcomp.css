@@ -60,13 +60,10 @@ pre {
 }
 
 .left {
-  flex: 3;
   display: flex;
   flex-direction: column;
   z-index: 1;
   box-shadow: 1px 1px 15px black;
-  border-right: solid;
-  min-width: 350px;
 }
 
 .left .mainCompWrapper {
@@ -159,7 +156,7 @@ pre {
   margin: 10px auto;
   display: flex;
   flex-direction: column-reverse;
-  width: 80%;
+  width: 75%;
   gap: 20px;
   flex: 1;
 }
@@ -228,6 +225,7 @@ pre {
   width: 40%;
   background-color: white;
   border: solid;
+  max-width: 450px;
 }
 
 .modalWrapper {

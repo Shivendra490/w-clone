@@ -22,7 +22,10 @@ const Footer = ({
     setInputMsg(inputMsg + emojiObject.emoji);
   };
   return (
-    <div style={{ padding: "4px 16px", backgroundColor: "black" }}>
+    <form
+      style={{ padding: "4px 16px", backgroundColor: "black" }}
+      onSubmit={submitHandler}
+    >
       <div className="chatInputWrapper">
         {emojiOpen && (
           <ClickAwayListener onClickAway={() => setEmojiOpen(false)}>
@@ -31,6 +34,12 @@ const Footer = ({
             </div>
           </ClickAwayListener>
         )}
+        <div className="button">
+          <ChatButton
+            Icon={<EmojiEmotionsIcon style={{ color: "white" }} />}
+            onClick={toggleEmojiOptions}
+          />
+        </div>
         <InputBox
           value={inputMsg}
           onChange={setInputMsgHandler}
@@ -39,21 +48,15 @@ const Footer = ({
           width={"95%"}
         />
         <div className="button">
-          <ChatButton
-            Icon={<EmojiEmotionsIcon style={{ color: "white" }} />}
-            onClick={toggleEmojiOptions}
-          />
-        </div>
-        <div className="button">
           {inputMsg && (
             <ChatButton
+              type="submit"
               Icon={<SendIcon style={{ color: "white" }} />}
-              onClick={submitHandler}
             />
           )}
         </div>
       </div>
-    </div>
+    </form>
   );
 };
 

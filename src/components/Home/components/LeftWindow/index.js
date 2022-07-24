@@ -9,13 +9,50 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import ChatButton from "../../../../AtomComponents/ChatButtons";
 import { getUserFromLocalStorage } from "../../../../api/LocalStorage";
 import Popover from "../../../../AtomComponents/Popover";
+import FindUserModal from "../Modals/FindUserModal";
+import { findUser } from "../../../../api/Chat";
 
-const currentUser = getUserFromLocalStorage();
-const LeftWindow = ({ handleNewMessageClick }) => {
-  const { lastMessages, getRoomMsgById, logoutUser } = useChatMsgContext();
+const myDetails = getUserFromLocalStorage();
+const LeftWindow = () => {
+  const { lastMessages, getRoomMsgById, logoutUser } =
+    useChatMsgContext();
   const [data, setData] = useState(lastMessages);
   const [filter, setFilter] = useState(false);
   const [openPopover, setOpenPopover] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [inputUser, setInputUser] = useState("");
+  const [searchResult, setSearchResult] = useState({});
+
+  const handleChangeFindUser = async (e) => {
+    const { value } = e.target;
+    setInputUser(value);
+    if (value.length > 10) {
+      return;
+    }
+    if (value.length === 10) {
+      if (value === myDetails.phone) {
+        setSearchResult(myDetails);
+      } else {
+        const response = await findUser(value);
+        if (response && response.status === "success") {
+          setSearchResult(response.data);
+        } else {
+          setSearchResult({ username: "-", phone: "Not registered" });
+        }
+      }
+    } else {
+      setSearchResult({});
+    }
+  };
+
+  const handleNewMessageClick = (e) => {
+    e.preventDefault();
+    setOpen(true);
+  };
+
+  const dismissModal = () => {
+    setOpen(false);
+  };
 
   const toggleFilter = () => {
     setFilter(!filter);
@@ -47,6 +84,11 @@ const LeftWindow = ({ handleNewMessageClick }) => {
     logoutUser();
   };
 
+  const onNewMessageClickHandler = () => {
+    //sendMsgNewUser(searchResult);
+    setOpen(false);
+  };
+
   return (
     <div className="left">
       <div
@@ -63,8 +105,7 @@ const LeftWindow = ({ handleNewMessageClick }) => {
           style={{ marginLeft: "2%", display: "flex", alignItems: "center" }}
         >
           <Avatar>
-            {currentUser.username &&
-              currentUser.username.slice(0, 1).toUpperCase()}
+            {myDetails.username && myDetails.username.slice(0, 1).toUpperCase()}
           </Avatar>
         </div>
         <div style={{ position: "relative" }} onClick={togglePopover}>
@@ -123,6 +164,14 @@ const LeftWindow = ({ handleNewMessageClick }) => {
           );
         })}
       </div>
+      <FindUserModal
+        open={open}
+        handleChangeFindUser={handleChangeFindUser}
+        dismissModal={dismissModal}
+        inputUser={inputUser}
+        searchResult={searchResult}
+        onNewMessageClickHandler={onNewMessageClickHandler}
+      />
     </div>
   );
 };

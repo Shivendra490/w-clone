@@ -1,6 +1,7 @@
 import { Avatar, Modal } from "@mui/material";
 import React from "react";
 import CloseIcon from "@mui/icons-material/Close";
+import SendIcon from "@mui/icons-material/Send";
 
 const FindUserModal = ({
   open,
@@ -8,6 +9,7 @@ const FindUserModal = ({
   inputUser,
   handleChangeFindUser,
   searchResult,
+  onNewMessageClickHandler
 }) => {
   return (
     <Modal open={open}>
@@ -45,35 +47,51 @@ const FindUserModal = ({
           />
           <div
             className="searchedUserWrapper"
-            style={{ display: "flex", height: "60px", width: "100%" }}
+            style={{
+              display: "flex",
+              height: "60px",
+              width: "100%",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginTop: "3%",
+            }}
           >
-            <div
-              className="userAvatarNameWrapper"
-              style={{
-                display: "flex",
-                gap: "6px",
-                alignItems: "center",
-                marginTop: "3%",
-                padding: "2%",
-                border: "1px solid grey",
-                borderRadius: "10px",
-              }}
-            >
-              <div className="userAvatar">
-                <Avatar />
-              </div>
-              <div
-                className="classUserNamePhoneWrapper"
-                style={{ display: "flex", flexDirection: "column" }}
-              >
-                <div className="classPhone">
-                  <h4>{searchResult.phone}</h4>
+            {searchResult.username && (
+              <>
+                <div
+                  className="userAvatarNameWrapper"
+                  style={{
+                    display: "flex",
+                    gap: "6px",
+                    alignItems: "center",
+
+                    padding: "2%",
+                    border: "1px solid grey",
+                    borderRadius: "10px",
+                  }}
+                >
+                  <div className="userAvatar">
+                    <Avatar>
+                      {searchResult.username?.slice(0, 1).toLowerCase() || ""}
+                    </Avatar>
+                  </div>
+                  <div
+                    className="classUserNamePhoneWrapper"
+                    style={{ display: "flex", flexDirection: "column" }}
+                  >
+                    <div className="classPhone">
+                      <h4>{searchResult.phone}</h4>
+                    </div>
+                    <div className="classUserName" style={{ color: "grey" }}>
+                      <h6>{searchResult.username}</h6>
+                    </div>
+                  </div>
                 </div>
-                <div className="classUserName" style={{ color: "grey" }}>
-                  <h6>{searchResult.username}</h6>
+                <div>
+                  <SendIcon onClick={onNewMessageClickHandler}/>
                 </div>
-              </div>
-            </div>
+              </>
+            )}
           </div>
         </div>
       </div>
