@@ -12,9 +12,9 @@ import Popover from "../../../../AtomComponents/Popover";
 import FindUserModal from "../Modals/FindUserModal";
 import { findUser } from "../../../../api/Chat";
 
-const myDetails = getUserFromLocalStorage();
 const LeftWindow = () => {
-  const { lastMessages, getRoomMsgById, logoutUser } =
+  const myDetails = getUserFromLocalStorage();
+  const { lastMessages, getRoomMsgById, logoutUser, sendMsgNewUser } =
     useChatMsgContext();
   const [data, setData] = useState(lastMessages);
   const [filter, setFilter] = useState(false);
@@ -85,7 +85,7 @@ const LeftWindow = () => {
   };
 
   const onNewMessageClickHandler = () => {
-    //sendMsgNewUser(searchResult);
+    sendMsgNewUser(searchResult);
     setOpen(false);
   };
 

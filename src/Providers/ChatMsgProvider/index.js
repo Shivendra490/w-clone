@@ -157,40 +157,58 @@ const ChatMsgProvider = ({ children }) => {
   }, [chatMessages, lastMessages]);
 
   const receiveMsgFromSocket = useCallback(() => {
-    sock.on("msg-receive", (msgObj, confirmation) => {
+    sock.on("msg-receive", (payload, confirmation) => {
+      const { msgObj, userDetails } = payload;
       play();
-      const cloneUserMsgArray = chatMessages[msgObj.senderId] || [];
-      cloneUserMsgArray.unshift(msgObj);
-      setChatMessages({
-        ...chatMessages,
-        [msgObj.senderId]: cloneUserMsgArray,
-      });
-      setLastMessages((lastMessages) => {
-        return [
-          ...lastMessages
-            .map((lastMsg) => {
-              if (lastMsg.userDetails.userId === msgObj.senderId) {
-                if (currentUser.userId !== lastMsg.userDetails.userId) {
-                  lastMsg.unread += 1;
-                }
-                return { ...lastMsg, ...msgObj };
-              }
-              return lastMsg;
-            })
-            .sort((a, b) => b.createdAt - a.createdAt),
-        ];
-      });
+
+      const cloneChatMsgArray = { ...chatMessages };
+      const cloneLastMsgArray = [...lastMessages];
+
+      if (cloneChatMsgArray[msgObj.senderId]) {
+        cloneChatMsgArray[msgObj.senderId].unshift(msgObj);
+      } else {
+        cloneChatMsgArray[msgObj.senderId] = [msgObj];
+      }
+      setChatMessages({ ...cloneChatMsgArray });
+
+      const index = cloneLastMsgArray.findIndex(
+        (lastMsg) => lastMsg.userDetails.userId === msgObj.senderId
+      );
+      if (index === -1) {
+        const modifiedLastMsgObj = {
+          ...msgObj,
+          userDetails,
+        };
+        cloneLastMsgArray.unshift(modifiedLastMsgObj);
+        if (currentUser.userId !== msgObj.senderId) {
+          cloneLastMsgArray[0].unread = 1;
+        }
+      } else {
+        cloneLastMsgArray[index] = {
+          ...cloneLastMsgArray[index],
+          ...msgObj,
+        };
+        if (currentUser.userId !== msgObj.senderId) {
+          cloneLastMsgArray[index].unread = cloneLastMsgArray[index].unread + 1;
+        }
+      }
+
+      cloneLastMsgArray.sort((a, b) => b.createdAt - a.createdAt);
+      setLastMessages([...cloneLastMsgArray]);
+
       if (msgObj.senderId === currentUser.userId) {
         confirmation({ status: "read" });
       } else {
         confirmation({ status: "delivered" });
       }
     });
-  }, [currentUser, chatMessages, play]);
+  }, [currentUser, lastMessages, chatMessages, play]);
 
   const sendMsg = async (msg) => {
     const senderId = getUserFromLocalStorage().userId;
     const receiverId = currentUser.userId;
+    const cloneChatMsgArray = { ...chatMessages };
+    const cloneLastMsgArray = [...lastMessages];
     if (!receiverId || !senderId) {
       return;
     }
@@ -200,35 +218,50 @@ const ChatMsgProvider = ({ children }) => {
       msgId: uuid(),
       message: msg,
     };
-    const cloneUserMsgArray = chatMessages[msgObj.receiverId];
-    cloneUserMsgArray.unshift({
+    const modifiedMsgObj = {
       ...msgObj,
       status: "pending",
       createdAt: Date.now(),
-    });
-    setChatMessages({
-      ...chatMessages,
-      [msgObj.receiverId]: cloneUserMsgArray,
-    });
+    };
 
-    const response = await sendMessageToUser(msgObj);
-    if (response && response.status === "success") {
-      cloneUserMsgArray[0] = response.data;
-      setChatMessages({
-        ...chatMessages,
-        [msgObj.receiverId]: cloneUserMsgArray,
-      });
+    // setting chat messages
+
+    if (cloneChatMsgArray[receiverId]) {
+      cloneChatMsgArray[receiverId].unshift(modifiedMsgObj);
+    } else {
+      cloneChatMsgArray[receiverId] = [modifiedMsgObj];
     }
+    setChatMessages({ ...cloneChatMsgArray });
 
-    const newMessage = cloneUserMsgArray[0];
-    //set last send message to last message
-    const index = lastMessages.findIndex(
+    // setting last messages
+    const index = cloneLastMsgArray.findIndex(
       (lastMsg) => lastMsg.userDetails.userId === receiverId
     );
-    const cloneLastMsgArray = [...lastMessages];
-    cloneLastMsgArray[index] = { ...lastMessages[index], ...newMessage };
+    if (index === -1) {
+      const modifiedLastMsgObj = {
+        ...modifiedMsgObj,
+        userDetails: currentUser,
+      };
+      cloneLastMsgArray.unshift(modifiedLastMsgObj);
+    } else {
+      cloneLastMsgArray[index] = {
+        ...cloneLastMsgArray[index],
+        ...modifiedMsgObj,
+      };
+    }
     cloneLastMsgArray.sort((a, b) => b.createdAt - a.createdAt);
-    setLastMessages(cloneLastMsgArray);
+    setLastMessages([...cloneLastMsgArray]);
+
+    // setting chat messages and last chat messages after response
+    const myDetails = getUserFromLocalStorage();
+    const response = await sendMessageToUser(msgObj, myDetails);
+    if (response && response.status === "success") {
+      cloneChatMsgArray[receiverId][0] = response.data;
+      setChatMessages({ ...cloneChatMsgArray });
+
+      cloneLastMsgArray[0] = { ...cloneLastMsgArray[0], ...response.data };
+      setLastMessages([...cloneLastMsgArray]);
+    }
   };
 
   const sendMsgNewUser = (newUserDetails) => {

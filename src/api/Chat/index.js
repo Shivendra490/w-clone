@@ -49,9 +49,9 @@ export const getRoomById = async (senderId, receiverId) => {
   }
 };
 
-export const sendMessageToUser = async (msgObj) => {
+export const sendMessageToUser = async (msgObj, userDetails) => {
   try {
-    const body = JSON.stringify(msgObj);
+    const body = JSON.stringify({ ...msgObj, userDetails });
     const res = await fetch(`${BASE_URL}/sendMessage`, {
       method: "POST",
       headers: { "content-type": "application/json" },

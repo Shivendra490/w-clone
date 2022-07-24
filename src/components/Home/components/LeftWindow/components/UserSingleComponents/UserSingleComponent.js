@@ -13,7 +13,7 @@ const UserSingleComponent = ({ data, handleRoomClick }) => {
         onClick={() => handleRoomClick(data.userDetails)}
       >
         <Stack direction="row" spacing={2} style={{ padding: "0.2em" }}>
-          <Avatar>{data.userDetails.username.substring(0, 1)}</Avatar>
+          <Avatar>{data.userDetails.username.slice(0, 1)}</Avatar>
         </Stack>
         <div className="nameChatCombineWrapper">
           <div className="name">
