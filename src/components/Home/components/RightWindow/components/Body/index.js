@@ -1,12 +1,18 @@
 import { CircularProgress } from "@mui/material";
-import React from "react";
-import { getUserFromLocalStorage } from "../api/LocalStorage";
-import useElementOnScreen from "../Hooks/ioHook";
-import Tick from "./Tick";
+import React, { useEffect } from "react";
+import { getUserFromLocalStorage } from "../../../../../../api/LocalStorage";
+import Tick from "../../../../../../AtomComponents/Tick";
+import useElementOnScreen from "../../../../../../Hooks/ioHook";
 
-const Body = ({ chatMessages, currentUserId }) => {
+const Body = ({ chatMessages, currentUserId, loading, fetchRoomById }) => {
   const { containerRef, isVisible } = useElementOnScreen();
   const id = getUserFromLocalStorage().userId;
+  useEffect(() => {
+    if (isVisible && currentUserId) {
+      fetchRoomById();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isVisible, currentUserId]);
   return (
     <div className="chatWrapper">
       <div className="chatLeftRightwrapper">
@@ -38,14 +44,15 @@ const Body = ({ chatMessages, currentUserId }) => {
           })}
         <div
           style={{
-            height: "100px",
+            height: isVisible ? "50px" : "100px",
             display: "flex",
             justifyContent: "center",
             alignItems: "flex-end",
+            margin: "auto",
           }}
           ref={containerRef}
         >
-          <CircularProgress />
+          {currentUserId && loading && <CircularProgress />}
         </div>
       </div>
     </div>

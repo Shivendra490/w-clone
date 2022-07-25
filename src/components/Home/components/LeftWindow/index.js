@@ -14,7 +14,7 @@ import { findUser } from "../../../../api/Chat";
 
 const LeftWindow = () => {
   const myDetails = getUserFromLocalStorage();
-  const { lastMessages, getRoomMsgById, logoutUser, sendMsgNewUser } =
+  const { lastMessages, sendOpenRoomEventToSocket, logoutUser, sendMsgNewUser } =
     useChatMsgContext();
   const [data, setData] = useState(lastMessages);
   const [filter, setFilter] = useState(false);
@@ -59,7 +59,7 @@ const LeftWindow = () => {
   };
 
   const onRoomClickHandler = (userDetails) => {
-    getRoomMsgById(userDetails);
+    sendOpenRoomEventToSocket(userDetails);
   };
 
   useEffect(() => {

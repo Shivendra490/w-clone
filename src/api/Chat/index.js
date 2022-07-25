@@ -31,11 +31,12 @@ export const getlastMessages = async (userId) => {
   }
 };
 
-export const getRoomById = async (senderId, receiverId) => {
+export const getRoomById = async (senderId, receiverId, page = 0) => {
   try {
     const body = JSON.stringify({
       senderId,
       receiverId,
+      page,
     });
     const res = await fetch(`${BASE_URL}/getRoomById`, {
       method: "POST",

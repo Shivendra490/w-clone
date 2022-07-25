@@ -26,6 +26,8 @@ const ChatMsgProvider = ({ children }) => {
   const [chatMessages, setChatMessages] = useState({});
   const [lastMessages, setLastMessages] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [chatRoomMap, setChatRoomMap] = useState(new Map());
   const navigate = useNavigate();
 
   const fetchLastMessages = async () => {
@@ -56,8 +58,10 @@ const ChatMsgProvider = ({ children }) => {
   const sendTyping = useCallback(() => {
     const senderId = getUserFromLocalStorage().userId;
     const receiverId = currentUser.userId;
-    sock.emit("send-typing", { senderId, receiverId });
-    sendStopTyping(senderId, receiverId);
+    if (senderId && receiverId) {
+      sock.emit("send-typing", { senderId, receiverId });
+      sendStopTyping(senderId, receiverId);
+    }
   }, [currentUser, sendStopTyping]);
 
   const receiveTypingStatusFromSocket = useCallback(() => {
@@ -87,29 +91,68 @@ const ChatMsgProvider = ({ children }) => {
     });
   }, [currentUser]);
 
-  const getRoomMsgById = async (currentUserDetails) => {
-    const receiverId = currentUserDetails.userId;
-    if (!receiverId) {
-      return;
-    }
-    setCurrentUser({ ...currentUserDetails });
-
-    const senderId = getUserFromLocalStorage().userId;
-    setLastMessages((lastMessages) => {
-      const index = lastMessages.findIndex(
-        (lastMsg) => lastMsg.userDetails.userId === receiverId
-      );
-      if (index !== -1) {
-        lastMessages[index].unread = 0;
+  const sendOpenRoomEventToSocket = useCallback((currentUserDetails) => {
+    try {
+      const senderId = getUserFromLocalStorage().userId;
+      const receiverId = currentUserDetails.userId;
+      if (!receiverId) {
+        return;
       }
-      return lastMessages;
-    });
-
-    const response = await getRoomById(senderId, receiverId);
-    if (response && response.status === "success") {
-      setChatMessages({ ...chatMessages, [receiverId]: response.data });
+      sock.emit("user-room-open", { senderId, receiverId }); // send open room socket event
+      setCurrentUser({ ...currentUserDetails });
+      setLastMessages((lastMessages) => {
+        const index = lastMessages.findIndex(
+          (lastMsg) => lastMsg.userDetails.userId === receiverId
+        );
+        if (index !== -1) {
+          lastMessages[index].unread = 0;
+        }
+        return lastMessages;
+      });
+    } catch (err) {
+      console.log(err);
     }
-  };
+  }, []);
+
+  const fetchRoomById = useCallback(async () => {
+    try {
+      const senderId = getUserFromLocalStorage().userId;
+      const receiverId = currentUser.userId;
+
+      let apiValue = chatRoomMap.get(receiverId);
+      if (apiValue !== undefined) {
+        if (apiValue.next === false) return;
+      } else {
+        apiValue = { page: 0, next: true };
+      }
+
+      setLoading(true);
+      const response = await getRoomById(senderId, receiverId, apiValue.page);
+      if (response && response.status === "success") {
+        //since limit per doc is 30
+        if (response.data.length < 30) {
+          chatRoomMap.set(receiverId, {
+            next: false,
+            page: apiValue.page + 1,
+          });
+        } else {
+          chatRoomMap.set(receiverId, {
+            next: true,
+            page: apiValue.page + 1,
+          });
+        }
+        setChatMessages({
+          ...chatMessages,
+          [receiverId]: [...(chatMessages[receiverId] || []), ...response.data],
+        });
+        setChatRoomMap(chatRoomMap);
+      }
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
+  }, [chatMessages, chatRoomMap, currentUser]);
 
   const UpdateRoomStatusFromSocket = useCallback(() => {
     sock.on("update-room-status", (payload) => {
@@ -195,7 +238,6 @@ const ChatMsgProvider = ({ children }) => {
 
       cloneLastMsgArray.sort((a, b) => b.createdAt - a.createdAt);
       setLastMessages([...cloneLastMsgArray]);
-
       if (msgObj.senderId === currentUser.userId) {
         confirmation({ status: "read" });
       } else {
@@ -309,17 +351,19 @@ const ChatMsgProvider = ({ children }) => {
   const values = useMemo(
     () => ({
       chatMessages,
-      sendMsg,
+      loading,
       currentUser,
       lastMessages,
+      sendMsg,
       setCurrentUser,
-      getRoomMsgById,
+      fetchRoomById,
       sendTyping,
       sendMsgNewUser,
+      sendOpenRoomEventToSocket,
       logoutUser,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [chatMessages, lastMessages, currentUser]
+    [chatMessages, lastMessages, currentUser, loading]
   );
   return (
     <ChatMsgContext.Provider value={values}>{children}</ChatMsgContext.Provider>

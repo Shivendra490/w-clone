@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 const options = {
   root: null,
-  rootMargin: "0px",
+  rootMargin: "4px",
   threshold: 0.1,
 };
 const useElementOnScreen = () => {
