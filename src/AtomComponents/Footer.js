@@ -1,7 +1,12 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import SendIcon from '@mui/icons-material/Send';
+import { debounce } from '@mui/material';
+import { useChatMsgContext } from '../Providers/ChatMsgProvider/context';
+
 
 const Footer = ({inputMsg,SetInputMsg,submitHandler}) => {
+
+  const {sendTyping}=useChatMsgContext()
     const handleKeyPress=(e)=>{
       // console.log('keypress6',e)
       
@@ -11,6 +16,22 @@ const Footer = ({inputMsg,SetInputMsg,submitHandler}) => {
       }
     }
 
+   const debounceFn=(e)=>{
+    SetInputMsg(e.target.value)
+    console.log('debounce')
+   }
+
+   const onChangeHandler=useCallback(
+    
+  // debounce(()=>sendTyping(),2000)
+  sendTyping()
+    
+  
+
+   )
+
+
+
   return (
     <div className="chatInputWrapper">
           <input
@@ -19,6 +40,10 @@ const Footer = ({inputMsg,SetInputMsg,submitHandler}) => {
             placeholder="Enter your message here"
             value={inputMsg}
             onChange={(e) => SetInputMsg(e.target.value)}
+            // onChange={(e)=>{SetInputMsg(e.target.value) && onChangeHandler()}}
+            
+            // onChange={debounce((e)=>{console.log('DEBOUNCE');
+            // SetInputMsg(e.target.value)},5000)}
             onKeyPress={handleKeyPress}
           />
           <div className="button">

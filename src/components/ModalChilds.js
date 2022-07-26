@@ -2,7 +2,7 @@ import React from 'react'
 import UnitSearchedComponent from './UnitSearchedComponent'
 import CloseIcon from "@mui/icons-material/Close";
 
-const ModalChilds = ({dismissModal,handleChangeFindUser,inputUser,searchResult}) => {
+const ModalChilds = ({dismissModal,handleChangeFindUser,inputUser,searchResult,sendMsgToNewUser}) => {
   return (
     <div className="childModal">
           <div
@@ -36,7 +36,7 @@ const ModalChilds = ({dismissModal,handleChangeFindUser,inputUser,searchResult})
                 textAlign: "center",
               }}
             />
-            {<UnitSearchedComponent searchResult={searchResult} />}
+            {<UnitSearchedComponent searchResult={searchResult} sendMsgToNewUser={sendMsgToNewUser}/>}
           </div>
         </div>
   )

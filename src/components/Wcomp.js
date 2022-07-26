@@ -24,7 +24,7 @@ import ModalChilds from "./ModalChilds";
 
 const Wcomp = () => {
   const [inputMsg, SetInputMsg] = useState("");
-  const { sendMsg, chatMessages ,lastMessages,fetchRoomId,currentUser} = useChatMsgContext();
+  const { sendMsg, chatMessages ,lastMessages,fetchRoomId,currentUser,sendMsgToNewUser,sendTyping} = useChatMsgContext();
   const [open, setOpen] = useState(false);
   const [inputUser, setInputUser] = useState("");
   const [searchResult, setSearchResult] = useState({});
@@ -58,7 +58,7 @@ const Wcomp = () => {
         const response = await findUser(value);
 
         if (response && response.status === "success") {
-          console.log(response, "hfjdhksdfksfsdflsdfflsjfjjk");
+          console.log(response, "response of find user 61");
           setSearchResult(response);
         } else {
           setSearchResult(response);
@@ -78,7 +78,7 @@ const Wcomp = () => {
   };
 
   // console.log(chatMessages[currentUser.userId],'chatjfsdlkslkjfjjjjjjjjjjjjjj');
-  // console.log(lastMessages,'@@@@@@@@@')
+  console.log(lastMessages,'@@@@@@@@@')
 
   return (
     <div className="left-right-wrapper">
@@ -113,7 +113,7 @@ const Wcomp = () => {
         </div>
       </div>
       <Modal open={open}>
-        <ModalChilds dismissModal={dismissModal} handleChangeFindUser={handleChangeFindUser} inputUser={inputUser} searchResult={searchResult}/>
+        <ModalChilds dismissModal={dismissModal} handleChangeFindUser={handleChangeFindUser} inputUser={inputUser} searchResult={searchResult} sendMsgToNewUser={sendMsgToNewUser}/>
       </Modal>
       <div className="right">
         <Header currentUser={currentUser}/>
@@ -123,6 +123,7 @@ const Wcomp = () => {
           submitHandler={submitHandler}
           inputMsg={inputMsg}
           SetInputMsg={SetInputMsg}
+          sendTyping={sendTyping}
         />
       </div>
     </div>

@@ -8,7 +8,7 @@ console.log(currentUser)
     <div className="topDetailsWrapper">
           <div className="userNameOnlineWrapper">
             <div className="userName">{currentUser.username && currentUser.username}</div>
-            <div className="onOff"><span>{currentUser.typing && 'typing...'}</span></div>
+            <div className="onOff"><span>{(currentUser.typing && 'typing...') || (currentUser.online && 'online')}</span></div>
           </div>
           <div className="dpWrapper">
             <Stack

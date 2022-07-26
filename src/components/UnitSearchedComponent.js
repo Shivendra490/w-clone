@@ -2,7 +2,7 @@ import { Avatar } from '@mui/material'
 import React from 'react'
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 
-const UnitSearchedComponent = ({searchResult}) => {
+const UnitSearchedComponent = ({searchResult,sendMsgToNewUser}) => {
     
   return (
     <div
@@ -57,7 +57,7 @@ const UnitSearchedComponent = ({searchResult}) => {
                 </div>
               </div>
             </div>
-            <div className="messageWrite">
+            <div className="messageWrite" onClick={()=>sendMsgToNewUser(searchResult)}>
               <span>
                 <EmailOutlinedIcon style={{ fontSize: "2rem" }} />
               </span>

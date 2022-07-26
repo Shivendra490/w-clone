@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
-import { milliToStandardTime } from "../api/Chat/TimeManipulate";
+import { leftMilliToStandardTime, milliToStandardTime } from "../api/Chat/TimeManipulate";
 import TickStatus from '../AtomComponents/TickStatus'
 import { getUserDetails } from "../api/LocalStorage";
 import Badge from '@mui/material/Badge';
@@ -14,7 +14,7 @@ const UserSingleComponent = ({user,onClick}) => {
 // return str
 //   }
 
-
+console.log(user)
   return (
 
     <div className="mainCompWrapper" onClick={()=>onClick(user.userDetails)}>
@@ -25,10 +25,10 @@ const UserSingleComponent = ({user,onClick}) => {
         <div className="name">
           <h4>{user.userDetails.username}</h4>
         </div>
-        <div className="chat"><> {user.senderId===getUserDetails().userId && <TickStatus status={user.status}/>}{user.message}</></div>
+        <div className="chat"><> {user.senderId===getUserDetails().userId && <TickStatus status={user.status}/>}{(user.typing && 'typing')||(user.message)}</></div>
       </div>
       <div className="timeBadgeWrapper" style={{display:'flex',flexDirection:'column',textAlign:'center',color:'green'}}>
-      <div className="time">{milliToStandardTime(user.createdAt)}
+      <div className="time">{leftMilliToStandardTime(user.createdAt)}
       <div className="badge">
       <Badge badgeContent={user.unread} color="primary"></Badge>
       </div>

@@ -6,6 +6,7 @@ import getMessages from "../../api/getMessages";
 import { getUserDetails } from "../../api/LocalStorage";
 import { getLastMessages, getRoomId, sendMessage } from "../../api/Chat";
 import { v4 as uuid } from "uuid";
+import { debounce } from "@mui/material";
 
 const sock = io("https://w-clone-backend.herokuapp.com/", {
   autoConnect: false,
@@ -16,6 +17,11 @@ const ChatMsgProvider = ({ children }) => {
   const [lastMessages, setLastMessages] = useState([]);
   const [userId, setuserId] = useState("");
   const [currentUser, setCurrentUser] = useState({});
+
+  const sendMsgToNewUser=(userDetails)=>{
+    console.log(userDetails,'21index')
+    setCurrentUser(userDetails.data)
+  }
 
   console.log(currentUser);
 
@@ -78,9 +84,11 @@ const ChatMsgProvider = ({ children }) => {
 
   const receiveMsgFromSocket = useCallback(() => {
    
-    sock.on("msg-receive", (msg, callback) => {
+    sock.on("msg-receive", (payload, callback) => {
     //  console.log('payload',msg)
     //  console.log('currentuser',currentUser)
+    console.log(payload)
+    const {msgObj:msg,userDetails}=payload
       const msgsenderId = msg.senderId;
       msgsenderId in chatMessages &&
         setChatMessages({
@@ -165,6 +173,9 @@ const ChatMsgProvider = ({ children }) => {
 
 
 
+console.log('@@@@@@hhLM',lastMessages)
+
+
   const updateTypingStatus=useCallback(()=>{
     
 
@@ -172,14 +183,65 @@ const ChatMsgProvider = ({ children }) => {
      console.log('170',data)
      if(currentUser.userId===data.senderId){
       setCurrentUser({...currentUser,typing:data.typing})
+      ////////////////////////////////////////////////
+      const x=lastMessages.map((curElem)=>{
+        if(curElem.userDetails.userId===data.senderId){
+          curElem['typing']=data.typing
+        }
+        return curElem
+      })
+      console.log('xxx',x)
+      setLastMessages(x)
+      ////////////////////////////////////////////////
+
      }
-    
-    
-    
     }
      
      )
-    },[currentUser])
+    },[currentUser,lastMessages])
+
+
+    const sendStopTyping = useCallback(
+      debounce(
+        (senderId, receiverId) =>
+          sock.emit("stop-typing", { senderId, receiverId }),
+        1500
+      ),
+      []
+    );
+
+    const sendTyping=()=>{
+
+     const senderId=getUserDetails().userId
+      const receiverId=currentUser.userId
+      
+      if(receiverId){
+        sock.emit('send-typing',{senderId:senderId,receiverId:receiverId})
+      }
+
+      
+      sendStopTyping(senderId,receiverId)
+      
+      
+    }
+
+
+    const userOnline=()=>{
+
+      //get data from event
+      // user-online - event 
+      // receiverId,online
+      
+      sock.on('user-online',({receiverId,online})=>{
+        console.log()
+        if(currentUser.userId===receiverId){
+          setCurrentUser({...currentUser,online:online})
+        }
+      })
+
+    }
+
+
  
 
   
@@ -191,10 +253,11 @@ const ChatMsgProvider = ({ children }) => {
   const sendMsg = async (msg) => {
     
     try {
+      const myDetails=getUserDetails()
       const msgObj = {
         message: msg,
         msgId: uuid(),
-        senderId: getUserDetails().userId,
+        senderId: myDetails.userId,
         receiverId: currentUser.userId,
       };
 
@@ -230,7 +293,7 @@ const ChatMsgProvider = ({ children }) => {
         if(a.createdAt>b.createdAt)return -1
       return 0}));
 
-      const response = await sendMessage(msgObj);
+      const response = await sendMessage(msgObj,myDetails);
       
 
       if (response && response.status === "success") {
@@ -263,15 +326,18 @@ const ChatMsgProvider = ({ children }) => {
     sock.auth = { userId: getUserDetails().userId };
     sock.connect();
     fetchLastMessages();
+    
   }, []);
 
   useEffect(() => {
     receiveMsgFromSocket();
     updateMessageStatus()
     updateTypingStatus()
+    userOnline()
     return () => {sock.off("msg-receive");
   sock.off("update-room-status");
-sock.off("typing-status")};
+sock.off("typing-status");sock.off('stop-typing');
+sock.off('user-online')};
     
   }, [receiveMsgFromSocket,updateMessageStatus,updateTypingStatus]);
 
@@ -284,6 +350,8 @@ sock.off("typing-status")};
       fetchRoomId,
       sendMsg,
       currentUser,
+      sendMsgToNewUser,
+      sendTyping
     }),
     [chatMessages, lastMessages, currentUser]
   );

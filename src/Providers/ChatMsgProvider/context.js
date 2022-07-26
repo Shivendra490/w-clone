@@ -5,7 +5,9 @@ const initialValue = {
   lastMessages:[],
   fetchRoomId:(receiverDetails)=>{},
   sendMsg:(msg) => {},
-  currentUser:{}
+  currentUser:{},
+  sendMsgToNewUser:()=>{},
+  sendTyping:()=>{}
 };
 
 const ChatMsgContext = createContext(initialValue);

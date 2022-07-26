@@ -65,12 +65,12 @@ const findUser = async ( phone) => {
   };
 
 
-  const sendMessage = async (msgObj) => {
+  const sendMessage = async (msgObj,userDetails) => {
     
     try {
-      console.log(msgObj,'71');
       
-      const body = JSON.stringify(msgObj);
+      
+      const body = JSON.stringify({...msgObj,userDetails});
   
       const res = await fetch(`https://w-clone-backend.herokuapp.com/sendMessage`, {
         method: "POST",
