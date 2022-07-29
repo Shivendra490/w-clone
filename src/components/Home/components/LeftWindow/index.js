@@ -144,7 +144,6 @@ const LeftWindow = () => {
           padding: "1em",
           flex: "1 0 0",
           overflowY: "auto",
-          position: "relative",
         }}
       >
         <div className="relativeChatWrapper">
