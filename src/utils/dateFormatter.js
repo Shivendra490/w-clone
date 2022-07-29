@@ -1,14 +1,14 @@
+const ONE_DAY = 24 * 60 * 60 * 1000;
 const dateFormatter = (timestamp) => {
   const startOfDay = new Date().setHours(0, 0, 0);
   const endOfDay = new Date().setHours(23, 59, 59);
-  const oneDay = 24 * 60 * 60 * 1000;
 
   if (timestamp >= startOfDay && timestamp <= endOfDay) {
     return new Date(timestamp).toLocaleTimeString("en-US", {
       hour: "2-digit",
       minute: "2-digit",
     });
-  } else if (timestamp < startOfDay && timestamp >= startOfDay - oneDay) {
+  } else if (timestamp < startOfDay && timestamp >= startOfDay - ONE_DAY) {
     return "yesterday";
   } else {
     return new Date(timestamp).toLocaleDateString("en-US", {
@@ -27,12 +27,14 @@ export const dateFormatterForRightSide = (current, next) => {
     return formattedCurrent;
   }
 
+  const formattedNext = dateFormatter(next);
   // means today's message
-  if (current >= startOfDay) {
+  if (current >= startOfDay && next >= startOfDay - ONE_DAY) {
     return "";
   }
-
-  const formattedNext = dateFormatter(next);
+  else if(current >= startOfDay){
+    return 'Today'
+  }
 
   // check if messages on same day
   if (formattedCurrent === formattedNext) {

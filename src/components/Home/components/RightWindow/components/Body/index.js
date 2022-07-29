@@ -30,20 +30,6 @@ const Body = ({ chatMessages, currentUserId, loading, fetchRoomById }) => {
           chatMessages[currentUserId].map((msg, index) => {
             return (
               <>
-                {showDate(index) && (
-                  <span
-                    style={{
-                      alignSelf: "center",
-                      margin: "10px 0px",
-                      border: "1px solid",
-                      padding: "8px 16px",
-                      borderRadius: "20px",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {showDate(index)}
-                  </span>
-                )}
                 <div
                   className={`chat ${msg.senderId === id && "chatRight"}`}
                   key={msg.msgId}
@@ -64,6 +50,20 @@ const Body = ({ chatMessages, currentUserId, loading, fetchRoomById }) => {
                     </span>
                   </div>
                 </div>
+                {showDate(index) && (
+                  <span
+                    style={{
+                      alignSelf: "center",
+                      margin: "10px 0px",
+                      border: "1px solid",
+                      padding: "8px 16px",
+                      borderRadius: "20px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {showDate(index)}
+                  </span>
+                )}
               </>
             );
           })}
