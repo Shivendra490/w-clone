@@ -1,18 +1,30 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import ChatMsgContext from "./context";
 import { io } from "socket.io-client";
-import getMessages from "../../api/getMessages";
+// import getMessages from "../../api/getMessages";
+import alertTone from "../../AtomComponents/Audio/alertTone.wav"
 
 import { getUserDetails } from "../../api/LocalStorage";
 import { getLastMessages, getRoomId, sendMessage } from "../../api/Chat";
 import { v4 as uuid } from "uuid";
 import { debounce } from "@mui/material";
+import useSound from 'use-sound';
+
 
 const sock = io("https://w-clone-backend.herokuapp.com/", {
   autoConnect: false,
 });
 
 const ChatMsgProvider = ({ children }) => {
+
+  const [play] = useSound(alertTone);
+
+  // const playSound=(url)=> {
+    
+  //   console.log("ye chal raha h")
+  //   audio.play();
+  // }
+
   const [chatMessages, setChatMessages] = useState({});
   const [lastMessages, setLastMessages] = useState([]);
   const [userId, setuserId] = useState("");
@@ -85,9 +97,9 @@ const ChatMsgProvider = ({ children }) => {
   const receiveMsgFromSocket = useCallback(() => {
    
     sock.on("msg-receive", (payload, callback) => {
-    //  console.log('payload',msg)
-    //  console.log('currentuser',currentUser)
-    console.log(payload)
+    
+    play()
+   
     const {msgObj:msg,userDetails}=payload
       const msgsenderId = msg.senderId;
       msgsenderId in chatMessages &&
@@ -103,8 +115,9 @@ const ChatMsgProvider = ({ children }) => {
         const x = lastMess.map((curElem) => {
          
           if (curElem.userDetails.userId === msg.senderId) {
-            console.log("79UUUUUUU", curElem.userDetails.userId, msg.senderId);
+            
             curElem['unread']=curElem['unread']+1
+            
             return { ...curElem, ...msg};
           }
           return curElem;
@@ -162,8 +175,7 @@ const ChatMsgProvider = ({ children }) => {
       
       })
        
-//{{}:[],{}:[]}
-//{ } {} {}
+
         
         
 
@@ -228,9 +240,7 @@ console.log('@@@@@@hhLM',lastMessages)
 
     const userOnline=()=>{
 
-      //get data from event
-      // user-online - event 
-      // receiverId,online
+      
       
       sock.on('user-online',({receiverId,online})=>{
         console.log()
@@ -260,7 +270,7 @@ console.log('@@@@@@hhLM',lastMessages)
         senderId: myDetails.userId,
         receiverId: currentUser.userId,
       };
-
+     
       
 
       const modifiableMsg = {
@@ -276,6 +286,7 @@ console.log('@@@@@@hhLM',lastMessages)
           ...chatMessages[modifiableMsg.receiverId],
         ],
       });
+    
 
     
       const lastMess = [...lastMessages];
@@ -303,7 +314,10 @@ console.log('@@@@@@hhLM',lastMessages)
         setChatMessages({
           ...chatMessages,
           [value.receiverId]: [value, ...chatMessages[value.receiverId]],
-        });
+        }
+        
+        );
+        play()
      
 
         const lastMess = [...lastMessages];

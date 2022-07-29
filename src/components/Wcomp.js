@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import "./Wcomp.css";
 // import 'bootstrap/dist/css/bootstrap.min.css'
-import Avatar from "@mui/material/Avatar";
-import Stack from "@mui/material/Stack";
+
 import { useChatMsgContext } from "../Providers/ChatMsgProvider/context";
 import UserSingleComponent from "./UserSingleComponent";
 import Header from "../AtomComponents/Header";
@@ -10,19 +9,21 @@ import Body from "../AtomComponents/Body";
 import Footer from "../AtomComponents/Footer";
 import ChatIcon from "@mui/icons-material/Chat";
 import Modal from "@mui/material/Modal";
+import useSound from 'use-sound';
+import alertTone from '../../src/AtomComponents/Audio/alertTone.wav'
 
 
-import { grey } from "@mui/material/colors";
+
 import { findUser } from "../api/Chat";
-// import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
-import UnitSearchedComponent from "./UnitSearchedComponent";
+
+
 import ModalChilds from "./ModalChilds";
 
-// const chatData = [
-  
-// ];
+
+
 
 const Wcomp = () => {
+  const [play]=useSound(alertTone)
   const [inputMsg, SetInputMsg] = useState("");
   const { sendMsg, chatMessages ,lastMessages,fetchRoomId,currentUser,sendMsgToNewUser,sendTyping} = useChatMsgContext();
   const [open, setOpen] = useState(false);
@@ -39,6 +40,7 @@ const Wcomp = () => {
 
   const submitHandler = () => {
     sendMsg(inputMsg);
+
     SetInputMsg("");
     
     
@@ -77,16 +79,14 @@ const Wcomp = () => {
     setOpen(false);
   };
 
-  // console.log(chatMessages[currentUser.userId],'chatjfsdlkslkjfjjjjjjjjjjjjjj');
-  console.log(lastMessages,'@@@@@@@@@')
+ 
 
   return (
     <div className="left-right-wrapper">
       <div className="left">
         <div className="chatHeadingWrapper">
           <div>chat</div>
-          {/* <div>+</div>
-          <div>set</div> */}
+         
         </div>
 
         <input type="search" className="search" placeholder="search here" />
