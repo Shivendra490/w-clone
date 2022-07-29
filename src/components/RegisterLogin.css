@@ -1,0 +1,43 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.mainWrapper{
+    height:100vh;
+    width:100vw;
+    display:grid;
+    place-content: center;
+}
+
+.registerWrapper{
+    /* border:solid; */
+    display:flex;
+    flex-direction: column;
+    box-shadow: 1px 1px 5px blue;
+}
+
+.fieldComponentWrapper{
+    display:flex;
+    padding:1em;
+    
+
+}
+
+.fieldName{
+    flex:5;
+    padding-right:1em;
+    display: grid;
+    place-content: center;
+}
+
+.input{
+flex:5;
+height: 5em;
+display: grid;
+place-content: center;
+}
+
+.btn{
+    
+}
