@@ -13,9 +13,35 @@ const dateFormatter = (timestamp) => {
   } else {
     return new Date(timestamp).toLocaleDateString("en-US", {
       day: "numeric",
-      month: "2-digit",
-      year: '2-digit'
+      month: "short",
+      year: "numeric",
     });
+  }
+};
+
+export const dateFormatterForRightSide = (current, next) => {
+  const formattedCurrent = dateFormatter(current);
+  const startOfDay = new Date().setHours(0, 0, 0);
+  // means messagess over
+  if (!next) {
+    return formattedCurrent;
+  }
+
+  // means today's message
+  if (current >= startOfDay) {
+    return "";
+  }
+
+  const formattedNext = dateFormatter(next);
+
+  // check if messages on same day
+  if (formattedCurrent === formattedNext) {
+    return "";
+  }
+
+  // msg day changes
+  if (formattedCurrent !== formattedNext) {
+    return formattedCurrent;
   }
 };
 

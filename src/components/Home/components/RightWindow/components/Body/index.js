@@ -3,10 +3,19 @@ import React, { useEffect } from "react";
 import { getUserFromLocalStorage } from "../../../../../../api/LocalStorage";
 import Tick from "../../../../../../AtomComponents/Tick";
 import useElementOnScreen from "../../../../../../Hooks/ioHook";
+import { dateFormatterForRightSide } from "../../../../../../utils/dateFormatter";
 
 const Body = ({ chatMessages, currentUserId, loading, fetchRoomById }) => {
   const { containerRef, isVisible } = useElementOnScreen();
   const id = getUserFromLocalStorage().userId;
+
+  const showDate = (index) => {
+    return dateFormatterForRightSide(
+      chatMessages[currentUserId][index].createdAt, // current value
+      chatMessages[currentUserId][index + 1]?.createdAt // next value
+    );
+  };
+
   useEffect(() => {
     if (isVisible && currentUserId) {
       fetchRoomById();
@@ -18,28 +27,44 @@ const Body = ({ chatMessages, currentUserId, loading, fetchRoomById }) => {
       <div className="chatLeftRightwrapper">
         {currentUserId &&
           chatMessages[currentUserId] &&
-          chatMessages[currentUserId].map((msg) => {
+          chatMessages[currentUserId].map((msg, index) => {
             return (
-              <div
-                className={`chat ${msg.senderId === id && "chatRight"}`}
-                key={msg.msgId}
-              >
-                <span>{msg.message}</span>
-                <div className="tickTimeWrapper">
-                  <span>
-                    {new Date(msg.createdAt)
-                      .toLocaleString("en-US", {
-                        hour: "numeric",
-                        minute: "numeric",
-                        hour12: true,
-                      })
-                      .toLocaleLowerCase()}
+              <>
+                {showDate(index) && (
+                  <span
+                    style={{
+                      alignSelf: "center",
+                      margin: "10px 0px",
+                      border: "1px solid",
+                      padding: "8px 16px",
+                      borderRadius: "20px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {showDate(index)}
                   </span>
-                  <span className="rightDoubleTick">
-                    {msg.senderId === id && <Tick status={msg.status} />}
-                  </span>
+                )}
+                <div
+                  className={`chat ${msg.senderId === id && "chatRight"}`}
+                  key={msg.msgId}
+                >
+                  <span>{msg.message}</span>
+                  <div className="tickTimeWrapper">
+                    <span>
+                      {new Date(msg.createdAt)
+                        .toLocaleString("en-US", {
+                          hour: "numeric",
+                          minute: "numeric",
+                          hour12: true,
+                        })
+                        .toLocaleLowerCase()}
+                    </span>
+                    <span className="rightDoubleTick">
+                      {msg.senderId === id && <Tick status={msg.status} />}
+                    </span>
+                  </div>
                 </div>
-              </div>
+              </>
             );
           })}
         <div
