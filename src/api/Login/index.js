@@ -1,8 +1,10 @@
+import { BASE_URL } from "../../Constants/url";
+
 const loginUser = async ({ phone, password }) => {
   try {
     const body = JSON.stringify({ phone, password });
 
-    const res = await fetch("https://w-clone-backend.herokuapp.com/login", {
+    const res = await fetch(BASE_URL, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: body,
@@ -22,7 +24,7 @@ const registerUser = async ({ userName, phone, password }) => {
     const username=userName;
     const body = JSON.stringify({ phone, password, username });
 
-    const res = await fetch("https://w-clone-backend.herokuapp.com/register", {
+    const res = await fetch(BASE_URL, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: body,

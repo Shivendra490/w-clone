@@ -134,6 +134,7 @@ pre {
   flex-direction: column;
   margin: 0.5em 0.8em;
   justify-content: center;
+  align-items: flex-end;
 }
 
 .right .topDetailsWrapper .userNameOnlineWrapper .userName {
