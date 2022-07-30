@@ -11,11 +11,17 @@ import { getUserFromLocalStorage } from "../../../../api/LocalStorage";
 import Popover from "../../../../AtomComponents/Popover";
 import FindUserModal from "../Modals/FindUserModal";
 import { findUser } from "../../../../api/Chat";
+import { useResponsiveContext } from "../../../../Providers/ResponsiveContext/context";
 
-const LeftWindow = () => {
+const LeftWindow = React.forwardRef((props, ref) => {
   const myDetails = getUserFromLocalStorage();
-  const { lastMessages, sendOpenRoomEventToSocket, logoutUser, sendMsgNewUser } =
-    useChatMsgContext();
+  const {
+    lastMessages,
+    sendOpenRoomEventToSocket,
+    logoutUser,
+    sendMsgNewUser,
+  } = useChatMsgContext();
+  const { toggleDrawer } = useResponsiveContext();
   const [data, setData] = useState(lastMessages);
   const [filter, setFilter] = useState(false);
   const [openPopover, setOpenPopover] = useState(false);
@@ -60,6 +66,7 @@ const LeftWindow = () => {
 
   const onRoomClickHandler = (userDetails) => {
     sendOpenRoomEventToSocket(userDetails);
+    toggleDrawer();
   };
 
   useEffect(() => {
@@ -90,7 +97,7 @@ const LeftWindow = () => {
   };
 
   return (
-    <div className="left">
+    <div className="left" ref={ref}>
       <div
         style={{
           height: "56px",
@@ -173,6 +180,6 @@ const LeftWindow = () => {
       />
     </div>
   );
-};
+});
 
 export default LeftWindow;

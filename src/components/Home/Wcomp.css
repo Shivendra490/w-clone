@@ -65,7 +65,9 @@ pre {
   z-index: 1;
   box-shadow: 1px 1px 15px black;
   position: relative;
-  width: 400px;
+  max-width: 600px;
+  min-width: 380px;
+  flex: 1;
 }
 
 .left .mainCompWrapper {
@@ -137,6 +139,9 @@ pre {
 .right .topDetailsWrapper .userNameOnlineWrapper .userName {
   font-size: x-large;
   color: black;
+  display:flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .right .topDetailsWrapper .userNameOnlineWrapper .onOff {
@@ -255,4 +260,9 @@ pre {
 
 .popover-elements:hover {
   background-color: rgb(25, 25, 25);
+}
+
+.MuiDrawer-paper{
+  background-color: cornsilk !important;
+  width: 100%;
 }

@@ -5,6 +5,7 @@ const initialValue = {
   isTablet: false,
   isDesktop: false,
   isDrawerOpen: false,
+  toggleDrawer: () => {},
 };
 
 const responsiveContext = createContext(initialValue);

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import ResponsiveContext from "./context";
 
 const ResponsiveProvider = ({ children }) => {
@@ -7,9 +7,13 @@ const ResponsiveProvider = ({ children }) => {
   const [isTablet, setIsTablet] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
+  const toggleDrawer = useCallback(() => {
+    setIsDrawerOpen(!isDrawerOpen);
+  }, [isDrawerOpen]);
+
   useEffect(() => {
     const width = window.innerWidth;
-    if (width <= 540) {
+    if (width <= 600) {
       setIsMobile(true);
       setIsDrawerOpen(true);
     } else if (width > 1024) {
@@ -18,30 +22,30 @@ const ResponsiveProvider = ({ children }) => {
       setIsTablet(true);
     }
   }, []);
+
   useEffect(() => {
-    window.addEventListener("resize", () => {
-      if (!isMobile && window.innerWidth <= 540) {
+    const checkWidth = () => {
+      if (!isMobile && window.innerWidth <= 600) {
         setIsMobile(true);
         setIsTablet(false);
         setIsDesktop(false);
-        setIsDrawerOpen(true);
       } else if (
         !isTablet &&
-        window.innerWidth > 540 &&
+        window.innerWidth > 600 &&
         window.innerWidth <= 1024
       ) {
         setIsMobile(false);
         setIsTablet(true);
         setIsDesktop(false);
-        setIsDrawerOpen(false);
       } else if (!isDesktop && window.innerWidth > 1024) {
         setIsMobile(false);
         setIsTablet(false);
         setIsDesktop(true);
-        setIsDrawerOpen(false);
       }
-    });
-    return () => window.removeEventListener("resize", window);
+    };
+
+    window.addEventListener("resize", checkWidth);
+    return () => window.removeEventListener("resize", checkWidth);
   }, [isDesktop, isMobile, isTablet]);
 
   const values = useMemo(
@@ -50,8 +54,9 @@ const ResponsiveProvider = ({ children }) => {
       isDesktop,
       isTablet,
       isDrawerOpen,
+      toggleDrawer,
     }),
-    [isDesktop, isMobile, isTablet, isDrawerOpen]
+    [isDesktop, isMobile, isTablet, isDrawerOpen, toggleDrawer]
   );
   return (
     <ResponsiveContext.Provider value={values}>
