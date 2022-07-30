@@ -3,16 +3,10 @@ import ChatMsgProvider from "./Providers/ChatMsgProvider";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Integrate from "./components/Login/Integrate";
 import Wcomp from "./components/Home/Wcomp";
+import ResponsiveProvider from "./Providers/ResponsiveContext";
 
 function App() {
   return (
-    // <ChatMsgProvider>
-    //   <Wcomp />
-    // </ChatMsgProvider>
-
-    // <Register/>
-    // <Login/>
-    // <LabTabs/>
     <Router>
       <Routes>
         <Route path="/" element={<Integrate />} />
@@ -20,13 +14,14 @@ function App() {
           path="/Wcomp"
           element={
             <ChatMsgProvider>
-              <Wcomp />
+              <ResponsiveProvider>
+                <Wcomp />
+              </ResponsiveProvider>
             </ChatMsgProvider>
           }
         />
       </Routes>
     </Router>
-    // <Integrate/>
   );
 }
 

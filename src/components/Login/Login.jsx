@@ -38,8 +38,6 @@ const Login = () => {
   };
   return (
     <>
-    {/* // <div className="mainWrapper">
-    //   <div className="registerWrapper"> */}
         
           {snackErr && <CustomizedSnackbars msg={snackErr} setSnackErr={setSnackErr}/>}
         
@@ -82,8 +80,6 @@ const Login = () => {
             </button>
           </div>
         </div>
-    {/* //   </div>
-    // </div> */}
     </>
   );
 };

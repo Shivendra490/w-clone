@@ -2,11 +2,13 @@ import { createContext, useContext } from "react";
 
 const initialValue = {
   chatMessages: {},
-  sendMsg: (msg) => {},
   lastMessages: [],
   currentUser: {},
+  loading: false,
+  sendMsg: () => {},
+  fetchRoomById: () => {},
   setCurrentUser: () => {},
-  getRoomMsgById: (receiverId) => {},
+  sendOpenRoomEventToSocket: () => {},
   sendTyping: () => {},
   sendMsgNewUser: () => {},
   logoutUser: () => {},
