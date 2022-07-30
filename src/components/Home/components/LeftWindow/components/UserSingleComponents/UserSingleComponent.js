@@ -31,7 +31,11 @@ const UserSingleComponent = ({ data, handleRoomClick }) => {
             }}
           >
             {data.senderId === userId && <Tick status={data.status} />}
-            {data.userDetails.typing ? "typing..." : data.message}
+            {data.userDetails.typing ? (
+              <span style={{ color: "green", fontWeight:'bold' }}>typing...</span>
+            ) : (
+              data.message
+            )}
           </span>
         </div>
       </div>

@@ -69,6 +69,11 @@ pre {
   min-width: 380px;
   flex: 1;
 }
+@media only screen and (max-width: 600px) {
+  .left {
+    min-width: none;
+  }
+}
 
 .left .mainCompWrapper {
   width: 100%;
@@ -134,13 +139,12 @@ pre {
   flex-direction: column;
   margin: 0.5em 0.8em;
   justify-content: center;
-  align-items: flex-end;
 }
 
 .right .topDetailsWrapper .userNameOnlineWrapper .userName {
   font-size: x-large;
   color: black;
-  display:flex;
+  display: flex;
   align-items: center;
   gap: 8px;
 }
@@ -263,7 +267,7 @@ pre {
   background-color: rgb(25, 25, 25);
 }
 
-.MuiDrawer-paper{
+.MuiDrawer-paper {
   background-color: cornsilk !important;
   width: 100%;
 }

@@ -30,7 +30,7 @@ const Footer = ({
         {emojiOpen && (
           <ClickAwayListener onClickAway={() => setEmojiOpen(false)}>
             <div style={{ position: "absolute", bottom: 70, left: 0 }}>
-              {emojiOpen && <EmojiPicker onEmojiClick={onEmojiClickhadler} />}
+              <EmojiPicker onEmojiClick={onEmojiClickhadler} />
             </div>
           </ClickAwayListener>
         )}
