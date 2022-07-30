@@ -1,15 +1,17 @@
 import React, { useEffect, useMemo, useState } from "react";
 import ResponsiveContext from "./context";
 
-const ResponsiveProvider = () => {
+const ResponsiveProvider = ({ children }) => {
   const [isMobile, setIsMobile] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   useEffect(() => {
     const width = window.innerWidth;
     if (width <= 540) {
       setIsMobile(true);
+      setIsDrawerOpen(true);
     } else if (width > 1024) {
       setIsDesktop(true);
     } else {
@@ -22,6 +24,7 @@ const ResponsiveProvider = () => {
         setIsMobile(true);
         setIsTablet(false);
         setIsDesktop(false);
+        setIsDrawerOpen(true);
       } else if (
         !isTablet &&
         window.innerWidth > 540 &&
@@ -30,10 +33,12 @@ const ResponsiveProvider = () => {
         setIsMobile(false);
         setIsTablet(true);
         setIsDesktop(false);
+        setIsDrawerOpen(false);
       } else if (!isDesktop && window.innerWidth > 1024) {
         setIsMobile(false);
         setIsTablet(false);
         setIsDesktop(true);
+        setIsDrawerOpen(false);
       }
     });
     return () => window.removeEventListener("resize", window);
@@ -44,11 +49,14 @@ const ResponsiveProvider = () => {
       isMobile,
       isDesktop,
       isTablet,
+      isDrawerOpen,
     }),
-    [isDesktop, isMobile, isTablet]
+    [isDesktop, isMobile, isTablet, isDrawerOpen]
   );
   return (
-    <ResponsiveContext.Provider value={values}></ResponsiveContext.Provider>
+    <ResponsiveContext.Provider value={values}>
+      {children}
+    </ResponsiveContext.Provider>
   );
 };
 

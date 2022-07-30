@@ -52,6 +52,7 @@ const Body = ({ chatMessages, currentUserId, loading, fetchRoomById }) => {
                 </div>
                 {showDate(index) && (
                   <span
+                    key={msg.msgId}
                     style={{
                       alignSelf: "center",
                       margin: "10px 0px",

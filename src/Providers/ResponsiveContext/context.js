@@ -4,6 +4,7 @@ const initialValue = {
   isMobile: false,
   isTablet: false,
   isDesktop: false,
+  isDrawerOpen: false,
 };
 
 const responsiveContext = createContext(initialValue);
