@@ -20,28 +20,29 @@ const dateFormatter = (timestamp) => {
 };
 
 export const dateFormatterForRightSide = (current, next) => {
-  const formattedCurrent = dateFormatter(current);
   const startOfDay = new Date().setHours(0, 0, 0);
-  // means messagess over
+  const formattedCurrent = dateFormatter(current);
+  // means messages over
   if (!next) {
     return formattedCurrent;
   }
-
   const formattedNext = dateFormatter(next);
-  // means today's message
-  if (current >= startOfDay && next >= startOfDay - ONE_DAY) {
+
+
+  if (current >= startOfDay && next >= startOfDay) {
     return "";
   }
-  else if(current >= startOfDay){
-    return 'Today'
+
+  if (current >= startOfDay && next < startOfDay) {
+    return "Today";
   }
 
-  // check if messages on same day
+
   if (formattedCurrent === formattedNext) {
     return "";
   }
 
-  // msg day changes
+
   if (formattedCurrent !== formattedNext) {
     return formattedCurrent;
   }

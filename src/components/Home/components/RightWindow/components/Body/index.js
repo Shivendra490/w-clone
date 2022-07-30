@@ -57,7 +57,7 @@ const Body = ({ chatMessages, currentUserId, loading, fetchRoomById }) => {
                       margin: "10px 0px",
                       border: "1px solid",
                       padding: "8px 16px",
-                      borderRadius: "20px",
+                      borderRadius: "4px",
                       fontWeight: "bold",
                     }}
                   >
